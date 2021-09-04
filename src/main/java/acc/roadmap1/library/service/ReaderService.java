@@ -8,6 +8,7 @@ public interface ReaderService {
 
     public List<Reader> findAll();
     public Reader findByName(String username);
+    public void save(Reader reader);
     //public Reader findById(int readersId);
 
 }

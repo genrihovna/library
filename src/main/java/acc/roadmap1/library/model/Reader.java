@@ -15,11 +15,6 @@ import java.util.List;
 @Table(name="users")
 public class Reader{
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "id")
-//    private int id;
-
     @Id
     @Column(name = "username")
     private String name;
@@ -81,5 +76,14 @@ public class Reader{
             books.remove(tempBook);
             tempBook.setReader(null);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Reader{" +
+                "name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", books=" + books.toString() +
+                '}';
     }
 }

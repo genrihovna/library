@@ -38,6 +38,11 @@ public class ReaderServiceImpl implements ReaderService{
         return theReader;
     }
 
+    @Override
+    public void save(Reader reader) {
+        readerRepo.save(reader);
+    }
+
 //    @Override
 //    public Reader findById(int readersId) {
 //        Optional<Reader> readerOptional = readerRepo.findById(readersId);

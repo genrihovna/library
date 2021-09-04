@@ -7,11 +7,7 @@ import acc.roadmap1.library.service.ReaderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -42,34 +38,29 @@ public class ReaderController {
         return "index";
     }
 
-    @GetMapping("/returnABook")
-    public String returnABook(@RequestParam("theBook") int theBook,
-                              Reader theReader,
+    @PostMapping()
+    public String returnABook(
+                              @RequestParam Integer theBook,
+                              Principal principal,
                               Model theModel){
         Book tempBook = bookService.findById(theBook);
-        if(theReader.getBooks().contains(tempBook)){
-            theReader.handOver(tempBook);
-            tempBook.setReader(null);
-            theModel.addAttribute("reader", theReader);
-        } else
-            throw new RuntimeException("You do not have this book in your list.");
-
-        return "index";
+        String readerName = principal.getName();
+        Reader theReader = readerService.findByName(readerName);
+        theReader.handOver(tempBook);
+        readerService.save(theReader);
+        theModel.addAttribute("readersBooks", theReader.getBooks());
+        return "yourAccount";
     }
 
-    @GetMapping("/yourProfile")
-    @ResponseBody
+    @GetMapping()
     public String showReaderProfile(Principal principal,
-                                    Model theModel
-                                    ){
-        //(@RequestParam("readerId") String readerName, Model theModel){
-
+                                    Model theModel){
         String readerName = principal.getName();
         Reader theReader = readerService.findByName(readerName);
         List<Book> readersBooks = theReader.getBooks();
         theModel.addAttribute("reader", theReader);
-
         theModel.addAttribute("readerId", readerName);
+        theModel.addAttribute("readersBooks", readersBooks);
         return "yourAccount";
     }
 
