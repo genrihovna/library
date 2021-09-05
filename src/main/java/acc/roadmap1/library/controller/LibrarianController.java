@@ -18,9 +18,6 @@ import java.util.List;
 @RequestMapping("/librarian")
 public class LibrarianController {
 
-    //CRUD book operations
-    //CRUD reader operations
-
     private BookService bookService;
     private ReaderService readerService;
 
@@ -44,19 +41,18 @@ public class LibrarianController {
         return "book-form";
     }
 
-    @PostMapping("/books/save")
-    public String saveABook(@ModelAttribute("book")
-                            Book theBook){
+    @PostMapping()
+    public String saveABook(@ModelAttribute("book") Book theBook,
+                            Model model){
         bookService.save(theBook);
-        return "book-form";
+        model.addAttribute("book", theBook);
+        return "redirect:/librarian";
     }
 
     @GetMapping("/deleteABook")
     public String deleteABook(@RequestParam("bookId") int theId){
         bookService.deleteById(theId);
-//        Map<String, Boolean> response = new HashMap<>();
-//        response.put("deleted", Boolean.TRUE);
-        return "book-form";
+        return "redirect:/librarian";
     }
 
     @GetMapping("/showFormForUpdate")
@@ -66,7 +62,4 @@ public class LibrarianController {
         theModel.addAttribute("book", theBook);
         return "book-form";
     }
-
-
-
 }

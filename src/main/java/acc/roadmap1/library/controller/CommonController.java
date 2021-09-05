@@ -13,11 +13,6 @@ import java.util.List;
 @Controller
 public class CommonController {
 
-    //user's name and role
-    // list of book with statuses
-    //special links: librarian's page (to approve readers,
-    // to work with books), admin's page (to approve librarians)
-
     private BookService bookService;
     private ReaderService readerService;
 
@@ -27,7 +22,6 @@ public class CommonController {
         this.readerService = readerService;
     }
 
-    //show list of books with statuses
     @GetMapping
     public String welcomePage(Model model){
         List<Book> theBooks = bookService.findAll();

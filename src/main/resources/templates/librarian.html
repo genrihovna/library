@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-
     <title>Book Management</title>
     <div th:replace="fragments/header :: header-css"/>
 </head>
 <body>
 <div th:replace="fragments/header :: header"/>
-
-<h1>Book Management (only for Librarians)</h1>
-<br>
-<br>
 <div class="container">
-
+    <h1>Book Management (only for Librarians)</h1>
+    <br>
+    <br>
+    <a th:href="@{/librarian/showFormForAdd}"
+       class="btn btn-info btn-sm">
+        Add new book
+    </a>
     <h3>List of books</h3>
     <table class="table table-bordered table-striped">
         <thead class="thead-dark">
@@ -36,20 +36,14 @@
             <td th:text="${tempBook.author}"/>
             <td th:text="${tempBook.published}"/>
             <td >
-                    <div class="bookStatus"
-                         th:if="${tempBook.status} == true">
-                        "${tempBook.reader}"
+                    <div class="bookStatus" th:if="${tempBook.status} == true">
+                        <span th:text="${tempBook.reader.getName()}"/>
                     </div>
-                    <div class="bookStatus"
-                         th:if="${tempBook.status} == false">
-                        Free
+                    <div class="bookStatus" th:if="${tempBook.status} == false">
+                        free
                     </div>
-                        </td>
+            </td>
             <td>
-                <a th:href="@{/librarian/showFormForAdd}"
-                   class="btn btn-info btn-sm">
-                    Add
-                </a>
                 <a th:href="@{/librarian/showFormForUpdate(bookId=${tempBook.id})}"
                    class="btn btn-info btn-sm">
                     Update
