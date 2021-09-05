@@ -16,7 +16,7 @@
 
     <div class="container">
         <div class="reader info">
-            <p><span sec:authorize="isAuthenticated()">
+            <p><span sec:authorize="isAuthenticated()"/>
             <h1>Welcome, <span sec:authentication="name"/></h1>
             </span></p>
         </div>
@@ -49,9 +49,11 @@
         </table>
 
         <hr>
-
-        <a th:href="@{/}">Back to WelcomePage</a>
+        <h2>
+            <a th:href="@{/reader/update}">Update your profile</a>
+        </h2>
+        <hr>
     </div>
-
+<div th:replace="fragments/footer :: footer"/>
 </body>
 </html>

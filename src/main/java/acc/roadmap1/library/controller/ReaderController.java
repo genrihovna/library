@@ -64,12 +64,14 @@ public class ReaderController {
         return "yourAccount";
     }
 
-    @GetMapping("/yourProfile/update")
-    public String updateProfile(@RequestParam("readerId") String readerName,
+    @GetMapping("/update")
+    public String updateProfile(
+                                Principal principal,
                                 Model theModel){
+        String readerName = principal.getName();
         Reader tempReader = readerService.findByName(readerName);
         theModel.addAttribute("reader", tempReader);
-        return "yourAccount";
+        return "user";
     }
 
 }
