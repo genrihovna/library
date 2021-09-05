@@ -36,13 +36,11 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public void save(Book theBook) {
-
         bookRepo.save(theBook);
     }
 
     @Override
     public void deleteById(int theId) {
-
         bookRepo.deleteById(theId);
     }
 }

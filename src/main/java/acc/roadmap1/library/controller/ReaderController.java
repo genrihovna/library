@@ -16,7 +16,6 @@ import java.util.List;
 @RequestMapping("/reader")
 public class ReaderController {
 
-    //read-update reader's info
     @Autowired
     private BookService bookService;
 

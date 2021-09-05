@@ -72,15 +72,6 @@
                             <input type="submit" value="Take" />
                         </form>
                     </div>
-<!--                    <div th:if="${tempBook.status} == true">-->
-<!--                        <span th:if="${#authentication.getPrincipal().getUsername()} == ${tempBook.reader.getName()}"/>-->
-<!--                        <form action="#"-->
-<!--                              th:action="@{/reader(theBook=${tempBook.id})}"-->
-<!--                              th:object="${reader}"-->
-<!--                              method="post">-->
-<!--                            <input type="submit" value="Return" />-->
-<!--                        </form>-->
-<!--                    </div>-->
                     <div sec:authorize="hasAuthority('ADMIN')" th:if="${tempBook.status} == true">
                         <span th:text="${tempBook.reader.getName()}"/>
                     </div>

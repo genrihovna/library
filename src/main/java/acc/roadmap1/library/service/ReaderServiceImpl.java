@@ -42,16 +42,4 @@ public class ReaderServiceImpl implements ReaderService{
     public void save(Reader reader) {
         readerRepo.save(reader);
     }
-
-//    @Override
-//    public Reader findById(int readersId) {
-//        Optional<Reader> readerOptional = readerRepo.findById(readersId);
-//        Reader theReader = null;
-//        if(readerOptional.isPresent()){
-//            theReader = readerOptional.get();
-//        } else{
-//            throw new RuntimeException("Did not get reader - " + readersId);
-//        }
-//        return null;
-//    }
 }
