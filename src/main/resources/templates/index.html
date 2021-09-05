@@ -19,7 +19,7 @@
     <br>
     <div class="starter">
             <h2>
-                <div sec:authorize="hasAuthority('READER')">
+                <div class="is reader" sec:authorize="hasAuthority('READER')">
                 Visit <a th:href="@{/reader}">your Profile Page</a>
                 </div>
             </h2>
@@ -38,7 +38,12 @@
                 <th>Published</th>
                 <th>Status</th>
                 <div sec:authorize="isAuthenticated()">
-                    <th>Action</th>
+                    <div class="readerSee" sec:authorize="hasAuthority('READER')">
+                        <th>Action</th>
+                    </div>
+                    <div class="librarianSee" sec:authorize="hasAuthority('ADMIN')">
+                        <th>Reader</th>
+                    </div>
                 </div>
             </tr>
         </thead>
@@ -58,25 +63,29 @@
                         Free
                     </div>
                 </td>
-                <div sec:authorize="isAuthenticated()">
-                    <td>
-                        <div class="canTake" sec:authorize="hasAuthority('READER')"
-                             th:if="${tempBook.status} == false">
-                            <a th:href="@{/reader/takeABook}"
-                               class="btn btn-info btn-sm">
-                                Take
-                            </a>
-                        </div>
-                        <div class="canReturn"
-                             th:if="${#authentication.getPrincipal()} == ${tempBook.reader} AND
-                             ${tempBook.status} == true">
-                            <a th:href="@{/reader/returnABook}"
-                               class="btn btn-info btn-sm">
-                                Return
-                            </a>
-                        </div>
+                <td>
+                    <div class="canTake" sec:authorize="hasAuthority('READER')"
+                         th:if="${tempBook.status} == false">
+                        <form action="#"
+                              th:action="@{/reader/takeABook(theBook=${tempBook.id})}"
+                              th:object="${reader}"
+                              method="post">
+                            <input type="submit" value="Take" />
+                        </form>
+                    </div>
+<!--                    <div th:if="${tempBook.status} == true">-->
+<!--                        <span th:if="${#authentication.getPrincipal().getUsername()} == ${tempBook.reader.getName()}"/>-->
+<!--                        <form action="#"-->
+<!--                              th:action="@{/reader(theBook=${tempBook.id})}"-->
+<!--                              th:object="${reader}"-->
+<!--                              method="post">-->
+<!--                            <input type="submit" value="Return" />-->
+<!--                        </form>-->
+<!--                    </div>-->
+                    <div sec:authorize="hasAuthority('ADMIN')" th:if="${tempBook.status} == true">
+                        <span th:text="${tempBook.reader.getName()}"/>
+                    </div>
                     </td>
-                </div>
             </tr>
         </tbody>
     </table>

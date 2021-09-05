@@ -23,19 +23,22 @@ public class ReaderController {
     @Autowired
     private ReaderService readerService;
 
-    @GetMapping("/takeABook")
-    public String takeABook(@RequestParam("theBook") int theBook,
-                            Reader theReader,
+    @PostMapping("/takeABook")
+    public String takeABook(@RequestParam int theBook,
+                            Principal principal,
                             Model theModel){
         Book tempBook = bookService.findById(theBook);
+        String readerName = principal.getName();
+        Reader theReader = readerService.findByName(readerName);
         if(theReader.getBooks().contains(tempBook)){
             throw new RuntimeException("This book is already in your list.");
         } else {
             theReader.add(tempBook);
-            tempBook.setReader(theReader);
+            readerService.save(theReader);
             theModel.addAttribute("reader", theReader);
+            theModel.addAttribute("readersBooks", theReader.getBooks());
         }
-        return "index";
+        return "yourAccount";
     }
 
     @PostMapping()
