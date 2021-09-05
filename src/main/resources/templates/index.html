@@ -13,20 +13,17 @@
 <body>
 <div th:replace="fragments/header :: header"/>
 
-<h1>Welcome Library Page</h1>
-<br>
-<br>
 <div class="container">
+    <h1>Welcome to Library Page</h1>
+    <br>
+    <br>
     <div class="starter">
-
-
             <h2>
-                <div sec:authorize="hasRole('READER')">
-                Visit <a th:href="@{/reader/yourProfile}">Your Profile Page</a>
+                <div sec:authorize="hasAuthority('READER')">
+                Visit <a th:href="@{/reader}">your Profile Page</a>
                 </div>
             </h2>
-
-        <div class="is librarian" sec:authorize="hasRole('ADMIN')">
+        <div class="is librarian" sec:authorize="hasAuthority('ADMIN')">
                 <h2>Visit <a th:href="@{/librarian}">Librarian Page</a></h2>
         </div>
 
@@ -40,7 +37,9 @@
                 <th>Author</th>
                 <th>Published</th>
                 <th>Status</th>
-                <th>Action</th>
+                <div sec:authorize="isAuthenticated()">
+                    <th>Action</th>
+                </div>
             </tr>
         </thead>
         <tbody>
@@ -59,16 +58,25 @@
                         Free
                     </div>
                 </td>
-                <td>
-                    <a th:href="@{/reader/takeABook}"
-                       class="btn btn-info btn-sm">
-                        Take
-                    </a>
-                    <a th:href="@{/reader/returnABook}"
-                       class="btn btn-info btn-sm">
-                        Return
-                    </a>
-                </td>
+                <div sec:authorize="isAuthenticated()">
+                    <td>
+                        <div class="canTake" sec:authorize="hasAuthority('READER')"
+                             th:if="${tempBook.status} == false">
+                            <a th:href="@{/reader/takeABook}"
+                               class="btn btn-info btn-sm">
+                                Take
+                            </a>
+                        </div>
+                        <div class="canReturn"
+                             th:if="${#authentication.getPrincipal()} == ${tempBook.reader} AND
+                             ${tempBook.status} == true">
+                            <a th:href="@{/reader/returnABook}"
+                               class="btn btn-info btn-sm">
+                                Return
+                            </a>
+                        </div>
+                    </td>
+                </div>
             </tr>
         </tbody>
     </table>
