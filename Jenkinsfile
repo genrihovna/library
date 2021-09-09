@@ -1,2 +1,5 @@
-checkout scm
-sh 'mvn install'
+node {
+    checkout scm
+    sh 'mvn install'
+}
+
