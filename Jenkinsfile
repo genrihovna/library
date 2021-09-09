@@ -1,1 +1,2 @@
-echo "Hello world"
+checkout scm
+sh 'mvn install'
