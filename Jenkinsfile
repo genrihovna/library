@@ -1,5 +1,5 @@
 node {
     checkout scm
-    sh 'mvn install'
+    sh './mvnw install'
 }
 
