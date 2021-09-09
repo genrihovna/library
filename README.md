@@ -1,5 +1,5 @@
 Assignment Requirements
-========================
+=========================
 
 -  Create the project using Maven/Gradle
 -  create a branch from InnerSource repository and commit your App into that branch.
