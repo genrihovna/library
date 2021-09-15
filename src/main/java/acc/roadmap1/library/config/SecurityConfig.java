@@ -15,7 +15,6 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
-//@EnableJpaRepositories(basePackages="acc.roadmap1.library", entityManagerFactoryRef="emf")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired

@@ -3,6 +3,7 @@ package acc.roadmap1.library.controller;
 import acc.roadmap1.library.model.Book;
 import acc.roadmap1.library.service.BookService;
 import acc.roadmap1.library.service.ReaderService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -20,8 +21,10 @@ import java.util.List;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(CommonController.class)
+@WebMvcTest(BookController.class)
 class CommonControllerTest {
+
+    private final ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
     private MockMvc mockMvc;
@@ -43,15 +46,11 @@ class CommonControllerTest {
         when(bookService.findAll()).thenReturn(books);
 
         RequestBuilder request = MockMvcRequestBuilders
-                .get("/")
+                .get("/api/books")
                 .accept(MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(request)
                 .andExpect(status().isOk())
-//                .andExpect(content()
-//                        .json("[{id: 100,title:title,author:author,published:1990}," +
-//                                "{id: 101,title:title,author:author,published:2000}," +
-//                                "{id: 102,title:title,author:author,published:2010}]", false))
-//                .andExpect(content().jsonPath("/html/body/div[3]/table/tbody/tr[1]/td[2]"))
+                .andExpect(content().json(mapper.writeValueAsString(books)))
                 .andReturn();
 
     }
