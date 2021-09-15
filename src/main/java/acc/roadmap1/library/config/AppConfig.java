@@ -8,5 +8,4 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan(basePackages = "acc.roadmap1.library")
 public class AppConfig {
 
-
 }

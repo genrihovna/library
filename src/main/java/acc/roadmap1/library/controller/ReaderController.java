@@ -7,7 +7,10 @@ import acc.roadmap1.library.service.ReaderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.util.List;
@@ -25,11 +28,11 @@ public class ReaderController {
     @PostMapping("/takeABook")
     public String takeABook(@RequestParam int theBook,
                             Principal principal,
-                            Model theModel){
+                            Model theModel) {
         Book tempBook = bookService.findById(theBook);
         String readerName = principal.getName();
         Reader theReader = readerService.findByName(readerName);
-        if(theReader.getBooks().contains(tempBook)){
+        if (theReader.getBooks().contains(tempBook)) {
             throw new RuntimeException("This book is already in your list.");
         } else {
             theReader.add(tempBook);
@@ -41,10 +44,7 @@ public class ReaderController {
     }
 
     @PostMapping()
-    public String returnABook(
-                              @RequestParam Integer theBook,
-                              Principal principal,
-                              Model theModel){
+    public String returnABook(@RequestParam Integer theBook, Principal principal, Model theModel) {
         Book tempBook = bookService.findById(theBook);
         String readerName = principal.getName();
         Reader theReader = readerService.findByName(readerName);
@@ -55,8 +55,7 @@ public class ReaderController {
     }
 
     @GetMapping()
-    public String showReaderProfile(Principal principal,
-                                    Model theModel){
+    public String showReaderProfile(Principal principal, Model theModel) {
         String readerName = principal.getName();
         Reader theReader = readerService.findByName(readerName);
         List<Book> readersBooks = theReader.getBooks();
@@ -67,9 +66,7 @@ public class ReaderController {
     }
 
     @GetMapping("/update")
-    public String updateProfile(
-                                Principal principal,
-                                Model theModel){
+    public String updateProfile(Principal principal, Model theModel) {
         String readerName = principal.getName();
         Reader tempReader = readerService.findByName(readerName);
         theModel.addAttribute("reader", tempReader);

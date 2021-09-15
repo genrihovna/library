@@ -28,17 +28,11 @@ public class Book {
 
     @Column(name = "date")
     private short published;
-
-    public int getId() {
-        return id;
-    }
-
     @ManyToOne(cascade = {CascadeType.PERSIST,
             CascadeType.MERGE, CascadeType.DETACH,
             CascadeType.REFRESH})
     @JoinColumn(name = "reader_username")
     private Reader reader;
-
     @Transient
     private boolean status;
 
@@ -52,6 +46,10 @@ public class Book {
     }
 
     public Book() {
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setId(int id) {
@@ -91,10 +89,7 @@ public class Book {
     }
 
     public boolean getStatus() {
-        if (this.getReader() != null) {
-            return true;
-        }
-        else return false;
+        return this.getReader() != null;
     }
 
     public void setStatus(boolean status) {

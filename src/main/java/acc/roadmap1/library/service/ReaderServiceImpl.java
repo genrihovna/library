@@ -1,6 +1,6 @@
 package acc.roadmap1.library.service;
 
-import acc.roadmap1.library.dao.ReaderRepo;
+import acc.roadmap1.library.repository.ReaderRepo;
 import acc.roadmap1.library.model.Reader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ReaderServiceImpl implements ReaderService{
+public class ReaderServiceImpl implements ReaderService {
 
-    private ReaderRepo readerRepo;
+    private final ReaderRepo readerRepo;
 
     @Autowired
     public ReaderServiceImpl(ReaderRepo readerRepo) {
@@ -30,9 +30,9 @@ public class ReaderServiceImpl implements ReaderService{
         Optional<Reader> readerOptional = readerList.stream()
                 .filter(reader -> reader.getName().equals(username))
                 .findFirst();
-        if(readerOptional.isPresent()){
+        if (readerOptional.isPresent()) {
             theReader = readerOptional.get();
-        } else{
+        } else {
             throw new RuntimeException("Did not get reader - " + username);
         }
         return theReader;

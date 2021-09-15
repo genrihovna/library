@@ -18,46 +18,42 @@ import java.util.List;
 @RequestMapping("/librarian")
 public class LibrarianController {
 
-    private BookService bookService;
-    private ReaderService readerService;
+    private final BookService bookService;
 
     @Autowired
-    public LibrarianController(BookService bookService, ReaderService readerService) {
+    public LibrarianController(BookService bookService) {
         this.bookService = bookService;
-        this.readerService = readerService;
     }
 
     @GetMapping
-    public String librarianPage(Model theModel){
+    public String librarianPage(Model theModel) {
         List<Book> bookList = bookService.findAll();
         theModel.addAttribute("books", bookList);
         return "librarian";
     }
 
     @GetMapping("/showFormForAdd")
-    public String addABook(Model model){
+    public String addABook(Model model) {
         Book theBook = new Book();
         model.addAttribute("book", theBook);
         return "book-form";
     }
 
     @PostMapping()
-    public String saveABook(@ModelAttribute("book") Book theBook,
-                            Model model){
+    public String saveABook(@ModelAttribute("book") Book theBook, Model model) {
         bookService.save(theBook);
         model.addAttribute("book", theBook);
         return "redirect:/librarian";
     }
 
     @GetMapping("/deleteABook")
-    public String deleteABook(@RequestParam("bookId") int theId){
+    public String deleteABook(@RequestParam("bookId") int theId) {
         bookService.deleteById(theId);
         return "redirect:/librarian";
     }
 
     @GetMapping("/showFormForUpdate")
-    public String updateABook(@RequestParam("bookId") int theId,
-                              Model theModel){
+    public String updateABook(@RequestParam("bookId") int theId, Model theModel) {
         Book theBook = bookService.findById(theId);
         theModel.addAttribute("book", theBook);
         return "book-form";

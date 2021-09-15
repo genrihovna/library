@@ -7,7 +7,10 @@ import java.util.List;
 public interface BookService {
 
     List<Book> findAll();
+
     Book findById(int booksId);
-    Book save (Book theBook);
+
+    Book save(Book theBook);
+
     void deleteById(int booksId);
 }

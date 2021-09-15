@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -12,11 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="users")
-public class Reader{
+@Table(name = "users")
+public class Reader {
 
     @Id
-    @Column(name = "username")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "username", unique = true)
     private String name;
 
     @Column(name = "password")
@@ -62,15 +68,15 @@ public class Reader{
         this.books = books;
     }
 
-    public void add(Book tempBook){
-        if(books==null)
+    public void add(Book tempBook) {
+        if (books == null)
             books = new ArrayList<>();
         books.add(tempBook);
         tempBook.setReader(this);
     }
 
-    public void handOver(Book tempBook){
-        if(!books.contains(tempBook)){
+    public void handOver(Book tempBook) {
+        if (!books.contains(tempBook)) {
             throw new RuntimeException("Book " + tempBook.toString() + " is not found");
         } else {
             books.remove(tempBook);
