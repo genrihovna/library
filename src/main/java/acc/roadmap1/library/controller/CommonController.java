@@ -22,13 +22,6 @@
 //        this.readerService = readerService;
 //    }
 //
-//    @GetMapping
-//    public String welcomePage(Model model) {
-//        List<Book> theBooks = bookService.findAll();
-//        model.addAttribute("books", theBooks);
-//        return "index";
-//    }
-//
 //    @GetMapping("/login")
 //    public String login() {
 //        return "login";

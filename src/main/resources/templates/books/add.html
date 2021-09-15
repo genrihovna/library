@@ -10,8 +10,7 @@
 <div class="container">
     <h3>Book Directory</h3>
     <p class="h4 mb-4">Save Book</p>
-    <form action="#" th:action="@{/librarian}"
-          th:object="${book}" method="POST">
+    <form action="#" th:action="@{add}" th:object="${book}" method="post">
         <div style="text-align:center; font-size:20px; color:green; font-weight:bold">
             <span th:utext="${message}">Book is added</span>
         </div>
@@ -28,7 +27,7 @@
     <hr>
     <a th:href="@{/}">Back to Welcome Page</a>
     <hr>
-    <a th:href="@{/librarian}">Back to Librarian Page</a>
+    <a th:href="@{/librarian/index}">Back to Librarian Page</a>
 </div>
 </body>
 </html>

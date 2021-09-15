@@ -6,25 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("/librarian")
-public class LibrarianController {
+@Controller("/")
+public class RootController {
 
     private final BookService bookService;
 
     @Autowired
-    public LibrarianController(BookService bookService) {
+    public RootController(BookService bookService) {
         this.bookService = bookService;
     }
 
-    @GetMapping
-    public String librarianPage(Model theModel) {
-        List<Book> bookList = bookService.findAll();
-        theModel.addAttribute("books", bookList);
-        return "librarian/index";
+    @GetMapping("/")
+    public String getMainPage(Model model) {
+        List<Book> theBooks = bookService.findAll();
+        model.addAttribute("books", theBooks);
+        return "index";
     }
 }
