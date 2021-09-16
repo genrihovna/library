@@ -15,7 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class Reader {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,7 @@ public class Reader {
     private int id;
 
     @Column(name = "username", unique = true)
-    private String name;
+    private String username;
 
     @Column(name = "password")
     private String password;
@@ -35,21 +35,25 @@ public class Reader {
                     CascadeType.REFRESH})
     private List<Book> books;
 
-    public Reader() {
+    public User() {
     }
 
-    public Reader(String name, String password, List<Book> books) {
-        this.name = name;
+    public User(String username, String password, List<Book> books) {
+        this.username = username;
         this.password = password;
         this.books = books;
     }
 
-    public String getName() {
-        return name;
+    public int getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -87,7 +91,7 @@ public class Reader {
     @Override
     public String toString() {
         return "Reader{" +
-                "name='" + name + '\'' +
+                "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", books=" + books.toString() +
                 '}';

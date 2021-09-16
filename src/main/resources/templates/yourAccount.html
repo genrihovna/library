@@ -11,7 +11,7 @@
 <body>
 <div th:replace="fragments/header :: header"/>
     <div class="container">
-        <div class="reader info">
+        <div class="user info">
             <p><span sec:authorize="isAuthenticated()"/>
             <h1>Welcome, <span sec:authentication="name"/></h1>
             </span></p>
@@ -34,8 +34,8 @@
                 <td th:text="${tempBook.published}"/>
                 <td>
                     <form action="#"
-                          th:action="@{/reader(theBook=${tempBook.id})}"
-                          th:object="${reader}"
+                          th:action="@{/user(theBook=${tempBook.id})}"
+                          th:object="${user}"
                           method="post">
                         <input type="submit" value="Return" />
                     </form>
@@ -45,7 +45,7 @@
         </table>
         <hr>
         <h2>
-            <a th:href="@{/reader/update}">Update your profile</a>
+            <a th:href="@{/user/update}">Update your profile</a>
         </h2>
         <hr>
     </div>

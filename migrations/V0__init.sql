@@ -11,9 +11,9 @@ create table library_management_system.books
     author varchar(255) null,
     date   smallint null,
     title  varchar(255) null,
-    reader BIGINT null,
+    user BIGINT null,
     constraint books_readers
-        foreign key (reader) references library_management_system.users (id)
+        foreign key (user) references library_management_system.users (id)
 );
 
 

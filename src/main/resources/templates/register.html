@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Library Login Page</title>
+    <div th:replace="fragments/header :: header-css"/>
+    <style>
+        .failed{
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+<div th:replace="fragments/header :: header"/>
+<div class="container">
+
+    <h3>Library Login Page</h3>
+    <div class="row" style="margin-top:20px">
+        <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+            <form action="/" th:object="${user}" th:action="@{/register}" method="POST" enctype="utf8">
+                <div>
+                    <label th:text="Username">Username</label>
+                    <input type="text" th:field="*{username}"/>
+                    <p th:each="error : ${#fields.errors('username')}"
+                       th:text="${error}">Validation error</p>
+                </div>
+                <div>
+                    <label th:text="Password">password</label>
+                    <input type="password" th:field="*{password}"/>
+                    <p th:each="error : ${#fields.errors('password')}"
+                       th:text="${error}">Validation error</p>
+                </div>
+                <button type="submit" th:text="Submit">submit</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+
+</html>

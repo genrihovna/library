@@ -31,12 +31,13 @@ public class Book {
     @ManyToOne(cascade = {CascadeType.PERSIST,
             CascadeType.MERGE, CascadeType.DETACH,
             CascadeType.REFRESH})
-    @JoinColumn(name = "reader_username")
-    private Reader reader;
+    @JoinColumn(name = "user")
+    private User reader;
+
     @Transient
     private boolean status;
 
-    public Book(int id, String title, String author, short published, Reader reader, boolean status) {
+    public Book(int id, String title, String author, short published, User reader, boolean status) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -80,12 +81,12 @@ public class Book {
         this.published = published;
     }
 
-    public Reader getReader() {
+    public User getReader() {
         return reader;
     }
 
-    public void setReader(Reader reader) {
-        this.reader = reader;
+    public void setReader(User user) {
+        this.reader = user;
     }
 
     public boolean getStatus() {
