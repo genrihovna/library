@@ -23,7 +23,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book findById(int theId) {
+    public Book findById(long theId) {
         Optional<Book> result = bookRepository.findById(theId);
         Book theBook = null;
         if (result.isPresent()) {
@@ -40,7 +40,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void deleteById(int theId) {
+    public void deleteById(long theId) {
         bookRepository.deleteById(theId);
     }
 }

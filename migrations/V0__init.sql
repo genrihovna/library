@@ -1,19 +1,19 @@
-create table library_management_system.users
+CREATE TABLE library_management_system.users
 (
-    id       BIGINT auto_increment primary key,
-    username varchar(255) not null unique,
-    password varchar(255) null
+    id       BIGINT auto_increment PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NULL
 );
 
-create table library_management_system.books
+CREATE TABLE library_management_system.books
 (
-    id     BIGINT auto_increment primary key,
-    author varchar(255) null,
-    date   smallint null,
-    title  varchar(255) null,
-    user BIGINT null,
-    constraint books_readers
-        foreign key (user) references library_management_system.users (id)
+    id     BIGINT auto_increment PRIMARY KEY,
+    author VARCHAR(255) NULL,
+    date   SMALLINT NULL,
+    title  VARCHAR(255) NULL,
+    user   BIGINT NULL,
+    CONSTRAINT books_readers
+        FOREIGN KEY (user) REFERENCES library_management_system.users (id)
 );
 
 

@@ -1,12 +1,9 @@
 package acc.roadmap1.library.model;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class ApplicationUserDetails implements UserDetails {
@@ -15,19 +12,17 @@ public class ApplicationUserDetails implements UserDetails {
 
     private final String password;
 
-    public ApplicationUserDetails(User user) {
-        this.username = user.getUsername();
-        this.password = user.getPassword();
+    private final List<GrantedAuthority> grantedAuthorities;
+
+    public ApplicationUserDetails(String username, String password, List<GrantedAuthority> grantedAuthorities) {
+        this.username = username;
+        this.password = password;
+        this.grantedAuthorities = grantedAuthorities;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> auth =  new ArrayList<>();
-
-        //TODO: Need do roles
-        auth.add(new SimpleGrantedAuthority("ADMIN"));
-
-        return auth;
+        return grantedAuthorities;
     }
 
     @Override

@@ -8,9 +8,9 @@ public interface BookService {
 
     List<Book> findAll();
 
-    Book findById(int booksId);
+    Book findById(long booksId);
 
     Book save(Book theBook);
 
-    void deleteById(int booksId);
+    void deleteById(long booksId);
 }

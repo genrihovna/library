@@ -22,14 +22,14 @@
                 <div>
                     <label th:text="Username">Username</label>
                     <input type="text" th:field="*{username}"/>
-                    <p th:each="error : ${#fields.errors('username')}"
-                       th:text="${error}">Validation error</p>
+                </div>
+                <div>
+                    <label th:text="Name">Name</label>
+                    <input type="text" th:field="*{name}"/>
                 </div>
                 <div>
                     <label th:text="Password">password</label>
                     <input type="password" th:field="*{password}"/>
-                    <p th:each="error : ${#fields.errors('password')}"
-                       th:text="${error}">Validation error</p>
                 </div>
                 <button type="submit" th:text="Submit">submit</button>
             </form>

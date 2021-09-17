@@ -18,7 +18,7 @@
     <br>
     <div class="starter">
         <h2>
-            <div class="is user" sec:authorize="hasAuthority('ADMIN')">
+            <div class="is reader" sec:authorize="hasAuthority('ADMIN')">
                 Visit <a th:href="@{/users}">your Profile Page</a>
             </div>
         </h2>
@@ -68,7 +68,7 @@
                      th:if="${tempBook.status} == false">
                     <form action="#"
                           th:action="@{/users/takeABook(theBook=${tempBook.id})}"
-                          th:object="${user}"
+                          th:object="${reader}"
                           method="post">
                         <input type="submit" value="Take"/>
                     </form>
@@ -77,7 +77,7 @@
                      th:if="${tempBook.status} == true">
                     <form action="#"
                           th:action="@{/users/returnABook(theBook=${tempBook.id})}"
-                          th:object="${user}"
+                          th:object="${reader}"
                           method="post">
                         <input type="submit" value="Take out"/>
                     </form>

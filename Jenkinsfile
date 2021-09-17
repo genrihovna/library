@@ -3,4 +3,3 @@ node {
     sh 'chmod +x mvnw'
     sh './mvnw install'
 }
-

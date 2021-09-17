@@ -1,11 +1,12 @@
 package acc.roadmap1.library.controller;
 
+import acc.roadmap1.library.controller.dto.RegisterAccount;
 import acc.roadmap1.library.model.Book;
-import acc.roadmap1.library.model.User;
+import acc.roadmap1.library.model.Reader;
 import acc.roadmap1.library.service.BookService;
-import acc.roadmap1.library.service.UserService;
+import acc.roadmap1.library.service.ReaderService;
+import acc.roadmap1.library.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,21 +14,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.request.WebRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller("/")
 public class RootController {
 
     private final BookService bookService;
-    private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
+
+    private final SecurityService securityService;
 
     @Autowired
-    public RootController(BookService bookService, UserService userService, PasswordEncoder passwordEncoder) {
+    public RootController(BookService bookService, SecurityService securityService) {
         this.bookService = bookService;
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
+        this.securityService = securityService;
     }
 
     @GetMapping("/")
@@ -43,18 +42,15 @@ public class RootController {
     }
 
     @GetMapping("/register")
-    public String getRegisterPage(WebRequest request, Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
+    public String getRegisterPage(Model model) {
+        model.addAttribute("user", new RegisterAccount());
         return "register";
     }
 
     @PostMapping("/register")
-    public String registerNewUser(@ModelAttribute("user") User user, HttpServletRequest request) {
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        userService.save(user);
+    public String registerNewUser(@ModelAttribute("user") RegisterAccount registerAccount) {
+        securityService.createAccount(registerAccount.getUsername(), registerAccount.getPassword(),
+                registerAccount.getName());
         return "redirect:/login";
     }
 }

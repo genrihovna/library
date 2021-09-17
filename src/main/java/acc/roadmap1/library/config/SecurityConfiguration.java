@@ -1,7 +1,9 @@
 package acc.roadmap1.library.config;
 
-import acc.roadmap1.library.model.ApplicationUserDetails;
-import acc.roadmap1.library.repository.UserRepository;
+import acc.roadmap1.library.repository.AccountRepository;
+import acc.roadmap1.library.repository.PrivilegeRepository;
+import acc.roadmap1.library.repository.ReaderRepository;
+import acc.roadmap1.library.repository.RoleRepository;
 import acc.roadmap1.library.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,8 +24,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     @Bean
-    public UserDetailsService userDetailsService(UserRepository userRepository) {
-        return new SecurityService(userRepository);
+    public UserDetailsService userDetailsService(AccountRepository accountRepository, PasswordEncoder passwordEncoder
+            , RoleRepository roleRepository, ReaderRepository readerRepository, PrivilegeRepository privilegeRepository) {
+        return new SecurityService(accountRepository, passwordEncoder, roleRepository, readerRepository,
+                privilegeRepository);
     }
 
     @Bean
@@ -36,6 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService);
     }
 
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/", "/register").permitAll()

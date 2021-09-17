@@ -1,6 +1,10 @@
 package acc.roadmap1.library.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -8,25 +12,31 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
-public class User {
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "readers")
+public class Reader {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private long id;
 
-    @Column(name = "username", unique = true)
-    private String username;
+    @Column(name = "name", unique = true)
+    private String name;
 
-    @Column(name = "password")
-    private String password;
+    @OneToOne
+    @JoinColumn(name = "account_id")
+    private Account account;
 
     @JsonIgnore
     @OneToMany(mappedBy = "reader",
@@ -35,41 +45,9 @@ public class User {
                     CascadeType.REFRESH})
     private List<Book> books;
 
-    public User() {
-    }
-
-    public User(String username, String password, List<Book> books) {
-        this.username = username;
-        this.password = password;
-        this.books = books;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
+    public Reader(String name, Account account) {
+        this.name = name;
+        this.account = account;
     }
 
     public void add(Book tempBook) {
@@ -86,14 +64,5 @@ public class User {
             books.remove(tempBook);
             tempBook.setReader(null);
         }
-    }
-
-    @Override
-    public String toString() {
-        return "Reader{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", books=" + books.toString() +
-                '}';
     }
 }

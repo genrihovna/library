@@ -1,0 +1,2 @@
+ALTER TABLE roles
+    MODIFY description VARCHAR(512) NULL;

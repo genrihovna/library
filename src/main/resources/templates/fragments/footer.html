@@ -12,7 +12,7 @@
             <!-- this is footer -->
             <!--            &copy; 2017 mkyong.com-->
             <span sec:authorize="isAuthenticated()">
-                | Logged user: <span sec:authentication="name"></span> |
+                | Logged reader: <span sec:authentication="name"></span> |
                 Roles: <span sec:authentication="principal.authorities"></span> |
                 <form th:action="@{/logout}" method="post">
                 <input type="submit" value="Sign Out"/>
