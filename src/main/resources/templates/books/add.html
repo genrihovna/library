@@ -12,6 +12,7 @@
     <p class="h4 mb-4">Save Book</p>
     <form action="#" th:action="@{add}" th:object="${book}" method="post">
         <div style="text-align:center; font-size:20px; color:green; font-weight:bold">
+            <span th:utext="${message}">Book is added</span>
             <span>Book is added</span>
         </div>
         <input type="hidden" th:field="*{id}"/>

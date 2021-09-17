@@ -31,9 +31,12 @@ public class RootController {
 
     @GetMapping("/")
     public String getMainPage(Model model) {
-        List<Book> books = bookService.findAll();
-        model.addAttribute("books", books);
-        return "index";
+
+        throw new RuntimeException("ABC");
+
+//        List<Book> books = bookService.findAll();
+//        model.addAttribute("books", books);
+//        return "index";
     }
 
     @GetMapping("/login")
