@@ -1,26 +1,42 @@
 package acc.roadmap1.library.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="users")
-public class Reader{
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "readers")
+public class Reader {
 
     @Id
-    @Column(name = "username")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private long id;
+
+    @Column(name = "name", unique = true)
     private String name;
 
-    @Column(name = "password")
-    private String password;
+    @OneToOne
+    @JoinColumn(name = "account_id")
+    private Account account;
 
     @JsonIgnore
     @OneToMany(mappedBy = "reader",
@@ -29,61 +45,24 @@ public class Reader{
                     CascadeType.REFRESH})
     private List<Book> books;
 
-    public Reader() {
-    }
-
-    public Reader(String name, String password, List<Book> books) {
+    public Reader(String name, Account account) {
         this.name = name;
-        this.password = password;
-        this.books = books;
+        this.account = account;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
-
-    public void add(Book tempBook){
-        if(books==null)
+    public void add(Book tempBook) {
+        if (books == null)
             books = new ArrayList<>();
         books.add(tempBook);
         tempBook.setReader(this);
     }
 
-    public void handOver(Book tempBook){
-        if(!books.contains(tempBook)){
+    public void handOver(Book tempBook) {
+        if (!books.contains(tempBook)) {
             throw new RuntimeException("Book " + tempBook.toString() + " is not found");
         } else {
             books.remove(tempBook);
             tempBook.setReader(null);
         }
-    }
-
-    @Override
-    public String toString() {
-        return "Reader{" +
-                "name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", books=" + books.toString() +
-                '}';
     }
 }

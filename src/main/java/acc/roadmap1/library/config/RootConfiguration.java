@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan(basePackages = "acc.roadmap1.library")
-public class AppConfig {
-
+public class RootConfiguration {
 
 }

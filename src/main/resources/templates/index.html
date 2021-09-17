@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <title>Welcome Library Page</title>
     <div th:replace="fragments/header :: header-css"/>
 </head>
@@ -16,67 +17,78 @@
     <br>
     <br>
     <div class="starter">
-            <h2>
-                <div class="is reader" sec:authorize="hasAuthority('READER')">
-                Visit <a th:href="@{/reader}">your Profile Page</a>
-                </div>
-            </h2>
-            <h2>
-                <div class="is librarian" sec:authorize="hasAuthority('ADMIN')">
+        <h2>
+            <div class="is reader" sec:authorize="hasAuthority('ADMIN')">
+                Visit <a th:href="@{/users}">your Profile Page</a>
+            </div>
+        </h2>
+        <h2>
+            <div class="is librarian" sec:authorize="hasAuthority('ADMIN')">
                 Visit <a th:href="@{/librarian}">Librarian Page</a>
-                </div>
-            </h2>
+            </div>
+        </h2>
     </div>
     <h3>List of books</h3>
     <table class="table table-bordered table-striped">
         <thead class="thead-dark">
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Published</th>
-                <th>Status</th>
-                <div sec:authorize="isAuthenticated()">
-                    <div class="readerSee" sec:authorize="hasAuthority('READER')">
-                        <th>Action</th>
-                    </div>
-                    <div class="librarianSee" sec:authorize="hasAuthority('ADMIN')">
-                        <th>Reader</th>
-                    </div>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Published</th>
+            <th>Status</th>
+            <div sec:authorize="isAuthenticated()">
+                <div class="readerSee" sec:authorize="hasAuthority('ADMIN')">
+                    <th>Action</th>
                 </div>
-            </tr>
+                <div class="librarianSee" sec:authorize="hasAuthority('ADMIN')">
+                    <th>Reader</th>
+                </div>
+            </div>
+        </tr>
         </thead>
         <tbody>
-            <tr th:each="tempBook : ${books}">
-                <td th:text="${tempBook.id}"/>
-                <td th:text="${tempBook.title}"/>
-                <td th:text="${tempBook.author}"/>
-                <td th:text="${tempBook.published}"/>
-                <td>
-                    <div class="bookStatus"
-                         th:if="${tempBook.status} == true">
-                        In hands
-                    </div>
-                    <div class="bookStatus"
-                         th:if="${tempBook.status} == false">
-                        Free
-                    </div>
-                </td>
-                <td>
-                    <div class="canTake" sec:authorize="hasAuthority('READER')"
-                         th:if="${tempBook.status} == false">
-                        <form action="#"
-                              th:action="@{/reader/takeABook(theBook=${tempBook.id})}"
-                              th:object="${reader}"
-                              method="post">
-                            <input type="submit" value="Take" />
-                        </form>
-                    </div>
-                    <div sec:authorize="hasAuthority('ADMIN')" th:if="${tempBook.status} == true">
-                        <span th:text="${tempBook.reader.getName()}"/>
-                    </div>
-                </td>
-            </tr>
+        <tr th:each="tempBook : ${books}">
+            <td th:text="${tempBook.id}"/>
+            <td th:text="${tempBook.title}"/>
+            <td th:text="${tempBook.author}"/>
+            <td th:text="${tempBook.published}"/>
+            <td>
+                <div class="bookStatus"
+                     th:if="${tempBook.status} == true">
+                    In hands
+                </div>
+                <div class="bookStatus"
+                     th:if="${tempBook.status} == false">
+                    Free
+                </div>
+            </td>
+            <td>
+                <div class="canTake" sec:authorize="hasAuthority('ADMIN')"
+                     th:if="${tempBook.status} == false">
+                    <form action="#"
+                          th:action="@{/users/takeABook(theBook=${tempBook.id})}"
+                          th:object="${reader}"
+                          method="post">
+                        <input type="submit" value="Take"/>
+                    </form>
+                </div>
+                <div class="canTake" sec:authorize="hasAuthority('ADMIN')"
+                     th:if="${tempBook.status} == true">
+                    <form action="#"
+                          th:action="@{/users/returnABook(theBook=${tempBook.id})}"
+                          th:object="${reader}"
+                          method="post">
+                        <input type="submit" value="Take out"/>
+                    </form>
+                </div>
+            </td>
+            <td>
+                <div sec:authorize="hasAuthority('ADMIN')" th:if="${tempBook.status} == true">
+                    <span th:text="${tempBook.getReader().getUsername()}"/>
+                </div>
+            </td>
+        </tr>
         </tbody>
     </table>
 

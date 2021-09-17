@@ -1,45 +1,40 @@
 package acc.roadmap1.library.service;
 
-import acc.roadmap1.library.dao.ReaderRepo;
+import acc.roadmap1.library.model.Account;
 import acc.roadmap1.library.model.Reader;
+import acc.roadmap1.library.repository.AccountRepository;
+import acc.roadmap1.library.repository.ReaderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class ReaderServiceImpl implements ReaderService{
+public class ReaderServiceImpl implements ReaderService {
 
-    private ReaderRepo readerRepo;
+    private final ReaderRepository readerRepository;
+    private final AccountRepository accountRepository;
 
     @Autowired
-    public ReaderServiceImpl(ReaderRepo readerRepo) {
-        this.readerRepo = readerRepo;
+    public ReaderServiceImpl(ReaderRepository readerRepository, AccountRepository accountRepository) {
+        this.readerRepository = readerRepository;
+        this.accountRepository = accountRepository;
     }
 
     @Override
     public List<Reader> findAll() {
-        return readerRepo.findAll();
+        return readerRepository.findAll();
     }
 
     @Override
     public Reader findByName(String username) {
-        List<Reader> readerList = this.findAll();
-        Reader theReader = null;
-        Optional<Reader> readerOptional = readerList.stream()
-                .filter(reader -> reader.getName().equals(username))
-                .findFirst();
-        if(readerOptional.isPresent()){
-            theReader = readerOptional.get();
-        } else{
-            throw new RuntimeException("Did not get reader - " + username);
-        }
-        return theReader;
+        return accountRepository.findAccountByUsername(username)
+                .map(Account::getReader)
+                .orElseThrow(() -> new RuntimeException("Did not get reader - " + username));
     }
 
     @Override
     public void save(Reader reader) {
-        readerRepo.save(reader);
+        readerRepository.save(reader);
     }
 }
