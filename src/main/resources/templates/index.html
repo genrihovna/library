@@ -18,12 +18,12 @@
     <br>
     <div class="starter">
         <h2>
-            <div class="is reader" sec:authorize="hasAuthority('ADMIN')">
+            <div class="is reader" sec:authorize="hasAuthority('MANAGE_BOOKS')">
                 Visit <a th:href="@{/users}">your Profile Page</a>
             </div>
         </h2>
         <h2>
-            <div class="is librarian" sec:authorize="hasAuthority('ADMIN')">
+            <div class="is librarian" sec:authorize="hasAuthority('MANAGE_BOOKS')">
                 Visit <a th:href="@{/librarian}">Librarian Page</a>
             </div>
         </h2>
@@ -38,10 +38,10 @@
             <th>Published</th>
             <th>Status</th>
             <div sec:authorize="isAuthenticated()">
-                <div class="readerSee" sec:authorize="hasAuthority('ADMIN')">
+                <div class="readerSee" sec:authorize="hasAuthority('MANAGE_BOOKS')">
                     <th>Action</th>
                 </div>
-                <div class="librarianSee" sec:authorize="hasAuthority('ADMIN')">
+                <div class="librarianSee" sec:authorize="hasAuthority('MANAGE_BOOKS')">
                     <th>Reader</th>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                 </div>
             </td>
             <td>
-                <div class="canTake" sec:authorize="hasAuthority('ADMIN')"
+                <div class="canTake" sec:authorize="hasAuthority('MANAGE_BOOKS')"
                      th:if="${tempBook.status} == false">
                     <form action="#"
                           th:action="@{/users/takeABook(theBook=${tempBook.id})}"
@@ -73,7 +73,7 @@
                         <input type="submit" value="Take"/>
                     </form>
                 </div>
-                <div class="canTake" sec:authorize="hasAuthority('ADMIN')"
+                <div class="canTake" sec:authorize="hasAuthority('MANAGE_BOOKS')"
                      th:if="${tempBook.status} == true">
                     <form action="#"
                           th:action="@{/users/returnABook(theBook=${tempBook.id})}"
@@ -84,8 +84,8 @@
                 </div>
             </td>
             <td>
-                <div sec:authorize="hasAuthority('ADMIN')" th:if="${tempBook.status} == true">
-                    <span th:text="${tempBook.getReader().getUsername()}"/>
+                <div sec:authorize="hasAuthority('MANAGE_BOOKS')" th:if="${tempBook.status} == true">
+                    <span th:text="${tempBook.getReader().getName()}"/>
                 </div>
             </td>
         </tr>

@@ -1,6 +1,7 @@
 package acc.roadmap1.library.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,9 +17,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Getter
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "books")
 public class Book {
 
@@ -44,6 +44,20 @@ public class Book {
 
     @Transient
     private boolean status;
+
+    public Book(String author, short published, String title) {
+        this.author = author;
+        this.published = published;
+        this.title = title;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public boolean getStatus() {
+        return reader != null;
+    }
 
     public void setReader(Reader reader) {
         this.reader = reader;

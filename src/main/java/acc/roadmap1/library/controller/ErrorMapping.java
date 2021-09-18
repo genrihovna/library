@@ -11,9 +11,13 @@ public class ErrorMapping {
 
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String exception(final Throwable throwable, final Model model) {
-        String errorMessage = (throwable != null ? throwable.getMessage() : "Unknown error");
+    public String exception(Throwable throwable, Model model) {
+        String errorMessage =
+                (throwable != null && throwable.getMessage() != null && !throwable.getMessage().isBlank() ?
+                throwable.getMessage() :
+                "Unknown error");
         model.addAttribute("errorMessage", errorMessage);
+        model.addAttribute("errorCode", 500);
         return "error";
     }
 }

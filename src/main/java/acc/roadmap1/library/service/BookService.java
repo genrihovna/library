@@ -1,5 +1,6 @@
 package acc.roadmap1.library.service;
 
+import acc.roadmap1.library.controller.dto.BookDTO;
 import acc.roadmap1.library.model.Book;
 
 import java.util.List;
@@ -8,9 +9,9 @@ public interface BookService {
 
     List<Book> findAll();
 
-    Book findById(long booksId);
+    Book create(BookDTO book);
 
-    Book save(Book theBook);
+    Book findById(long booksId);
 
     void deleteById(long booksId);
 }
