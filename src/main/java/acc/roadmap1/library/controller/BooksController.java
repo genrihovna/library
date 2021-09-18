@@ -1,5 +1,6 @@
 package acc.roadmap1.library.controller;
 
+import acc.roadmap1.library.controller.dto.BookDTO;
 import acc.roadmap1.library.model.Book;
 import acc.roadmap1.library.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/books")
@@ -27,14 +27,14 @@ public class BooksController {
     @Secured("MANAGE_BOOKS")
     @GetMapping("/add")
     public String addABook(Model model) {
-        Book book = new Book();
+        BookDTO book = new BookDTO();
         model.addAttribute("book", book);
         return "books/add";
     }
 
     @PostMapping("/add")
-    public String saveABook(@ModelAttribute("book") Book book, Model model) {
-        bookService.save(book);
+    public String saveABook(@ModelAttribute("book") BookDTO book, Model model) {
+        bookService.create(book);
         model.addAttribute("book", book);
         return "redirect:/librarian";
     }
