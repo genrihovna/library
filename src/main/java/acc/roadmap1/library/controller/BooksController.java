@@ -3,6 +3,7 @@ package acc.roadmap1.library.controller;
 import acc.roadmap1.library.model.Book;
 import acc.roadmap1.library.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ public class BooksController {
         this.bookService = bookService;
     }
 
+    @Secured("MANAGE_BOOKS")
     @GetMapping("/add")
     public String addABook(Model model) {
         Book book = new Book();

@@ -18,12 +18,12 @@
     <br>
     <div class="starter">
         <h2>
-            <div class="is reader" sec:authorize="hasAuthority('ADMIN')">
+            <div sec:authorize="hasAuthority('MANAGE_BOOKS')">
                 Visit <a th:href="@{/users}">your Profile Page</a>
             </div>
         </h2>
         <h2>
-            <div class="is librarian" sec:authorize="hasAuthority('ADMIN')">
+            <div sec:authorize="hasAuthority('MANAGE_BOOKS')">
                 Visit <a th:href="@{/librarian}">Librarian Page</a>
             </div>
         </h2>

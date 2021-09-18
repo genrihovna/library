@@ -1,4 +1,4 @@
-CREATE TABLE library_management_system.roles
+CREATE TABLE best_library.roles
 (
     id          BIGINT AUTO_INCREMENT,
     name        VARCHAR(250) NOT NULL,
@@ -8,9 +8,9 @@ CREATE TABLE library_management_system.roles
 );
 
 CREATE UNIQUE INDEX roles_name_uindex
-    ON library_management_system.roles (name);
+    ON best_library.roles (name);
 
-CREATE TABLE library_management_system.accounts
+CREATE TABLE best_library.accounts
 (
     id       BIGINT AUTO_INCREMENT,
     username VARCHAR(250) NOT NULL,
@@ -20,32 +20,32 @@ CREATE TABLE library_management_system.accounts
 );
 
 CREATE UNIQUE INDEX accounts_username_uindex
-    ON library_management_system.accounts (username);
+    ON best_library.accounts (username);
 
-ALTER TABLE library_management_system.users
+ALTER TABLE best_library.users
     DROP COLUMN password;
 
-DROP INDEX username ON library_management_system.users;
+DROP INDEX username ON best_library.users;
 
-ALTER TABLE library_management_system.users
+ALTER TABLE best_library.users
     DROP COLUMN username;
 
-RENAME TABLE library_management_system.users TO readers;
+RENAME TABLE best_library.users TO readers;
 
-ALTER TABLE library_management_system.readers
+ALTER TABLE best_library.readers
     ADD name VARCHAR(250) NOT NULL;
 
 CREATE UNIQUE INDEX username
-    ON library_management_system.readers (name);
+    ON best_library.readers (name);
 
-ALTER TABLE library_management_system.readers
+ALTER TABLE best_library.readers
     ADD CONSTRAINT name
         UNIQUE (name);
 
-ALTER TABLE library_management_system.accounts
+ALTER TABLE best_library.accounts
     ADD role_id BIGINT NOT NULL;
 
-ALTER TABLE library_management_system.accounts
+ALTER TABLE best_library.accounts
     ADD CONSTRAINT users_roles_id_fk
         FOREIGN KEY (role_id) REFERENCES roles (id);
 
