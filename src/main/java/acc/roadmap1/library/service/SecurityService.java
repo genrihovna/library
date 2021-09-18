@@ -56,7 +56,7 @@ public class SecurityService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User with login " + username + " not found"));
     }
 
-    public void createAccount(String username, String password, String name) {
+    public void createLibrarianAccount(String username, String password, String name) {
         Role adminRole = getAdminRole();
 
         Account account = new Account(username, passwordEncoder.encode(password), List.of(adminRole));
@@ -64,6 +64,24 @@ public class SecurityService implements UserDetailsService {
 
         Reader reader = new Reader(name, account);
         readerRepository.save(reader);
+    }
+
+    public void createReaderAccount(String username, String password, String name) {
+        Role readerRole = getReaderRole();
+
+        Account account = new Account(username, passwordEncoder.encode(password), List.of(readerRole));
+        account = accountRepository.save(account);
+
+        Reader reader = new Reader(name, account);
+        readerRepository.save(reader);
+    }
+
+    private Role getReaderRole() {
+        Optional<Role> role = roleRepository.findRoleByName(RoleNames.READER.name());
+        if (role.isEmpty()){
+            role = Optional.of(roleRepository.save(new Role(RoleNames.READER.name(), getReaderPrivileges())));
+        }
+        return role.orElseThrow();
     }
 
     private Role getAdminRole() {
@@ -77,10 +95,34 @@ public class SecurityService implements UserDetailsService {
     }
 
     private List<Privilege> getDefaultAdminPrivileges() {
-        return privilegeRepository.saveAll(List.of(
-                new Privilege(Privileges.MANAGE_BOOKS.name()),
-                new Privilege(Privileges.MANAGE_ACCOUNTS.name())
-        ));
+        List<String> defaultAdminPrevileges = List.of(
+                Privileges.MANAGE_BOOKS.name(),
+                Privileges.MANAGE_ACCOUNTS.name()
+        );
+
+        return getPrivileges(defaultAdminPrevileges);
+    }
+
+    private List<Privilege> getPrivileges(List<String> defaultPrevileges) {
+        List<Privilege> privileges = privilegeRepository.findPrivilegeByNameIn(defaultPrevileges);
+
+        List<String> foundedPrivilegeNames = privileges.stream().map(Privilege::getName).collect(Collectors.toList());
+
+        List<Privilege> differentPrivileges = defaultPrevileges.stream()
+                .filter(privilegeName -> !foundedPrivilegeNames.contains(privilegeName))
+                .map(Privilege::new)
+                .collect(Collectors.toList());
+
+        privilegeRepository.saveAll(differentPrivileges);
+
+        return privilegeRepository.findPrivilegeByNameIn(defaultPrevileges);
+    }
+
+    private List<Privilege> getReaderPrivileges() {
+        List<String> defaultReaderPrevileges = List.of(
+                Privileges.MANAGE_BOOKS.name()
+        );
+        return getPrivileges(defaultReaderPrevileges);
     }
 
     private List<GrantedAuthority> getGrantedAuthoritiesFromRoles(List<Role> roles) {
@@ -88,5 +130,4 @@ public class SecurityService implements UserDetailsService {
                 .map(privilege -> new SimpleGrantedAuthority(privilege.getName()))
                 .collect(Collectors.toList());
     }
-
 }

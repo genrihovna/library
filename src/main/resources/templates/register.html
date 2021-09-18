@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
 <head>
     <title>Library Login Page</title>
@@ -12,8 +13,9 @@
 </head>
 
 <body>
-<div th:replace="fragments/header :: header"/>
+
 <div class="container">
+    <div th:replace="fragments/header :: header"/>
 
     <h3>Library Login Page</h3>
     <div class="row" style="margin-top:20px">
@@ -36,8 +38,13 @@
         </div>
     </div>
 
+    <div sec:authorize="hasAuthority('MANAGE_ACCOUNTS')">
+            Add <a th:href="@{/register/admin}">new admin</a>
+    </div>
+
+    <div th:replace="fragments/footer :: footer"/>
 </div>
-<div th:replace="fragments/footer :: footer"/>
+
 </body>
 
 </html>

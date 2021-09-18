@@ -38,7 +38,7 @@
             <td th:text="${tempBook.published}"/>
             <td>
                 <div class="bookStatus" th:if="${tempBook.status} == true">
-                    <span th:text="${tempBook.getReader().getUsername()}"/>
+                    <span th:text="${tempBook.getReader().getName()}"/>
                 </div>
                 <div class="bookStatus" th:if="${tempBook.status} == false">
                     free
