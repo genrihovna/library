@@ -62,4 +62,11 @@ public class Book {
     public void setReader(Reader reader) {
         this.reader = reader;
     }
+
+    @Override
+    public String toString() {
+        return author +
+                ", " + published +
+                ", " + title + "//";
+    }
 }

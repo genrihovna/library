@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -55,5 +55,12 @@ public class Reader {
             books.remove(tempBook);
             tempBook.setReader(null);
         }
+    }
+
+    public String getAllBooks(){
+        List<String> books = this.getBooks()
+                .stream().map(book -> book.toString())
+                .collect(Collectors.toList());
+        return books.toString();
     }
 }
