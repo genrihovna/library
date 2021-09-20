@@ -61,7 +61,7 @@
                               method="post"
                               th:action="@{/books/take(id=${book.id})}"
                               th:object="${reader}">
-                            <input type="submit" name="take" value="Take"/>
+                            <input name="take" type="submit" value="Take"/>
                         </form>
                     </div>
                     <div sec:authorize="hasAuthority('MANAGE_BOOKS')"
@@ -70,7 +70,7 @@
                               method="post"
                               th:action="@{/books/return(id=${book.id})}"
                               th:object="${reader}">
-                            <input type="submit" name="return" value="Take out"/>
+                            <input name="return" type="submit" value="Take out"/>
                         </form>
                     </div>
                 </td>

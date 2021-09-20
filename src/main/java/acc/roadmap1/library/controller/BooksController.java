@@ -1,6 +1,6 @@
 package acc.roadmap1.library.controller;
 
-import acc.roadmap1.library.controller.dto.BookDTO;
+import acc.roadmap1.library.controller.dto.CreateBookItem;
 import acc.roadmap1.library.model.ApplicationUserDetails;
 import acc.roadmap1.library.model.Book;
 import acc.roadmap1.library.model.Reader;
@@ -36,13 +36,13 @@ public class BooksController {
     @Secured("MANAGE_BOOKS")
     @GetMapping("/add")
     public String addABook(Model model) {
-        BookDTO book = new BookDTO();
+        CreateBookItem book = new CreateBookItem();
         model.addAttribute("book", book);
         return "books/add";
     }
 
     @PostMapping("/add")
-    public String saveABook(@ModelAttribute("book") BookDTO book, Model model) {
+    public String saveABook(@ModelAttribute("book") CreateBookItem book, Model model) {
         bookService.create(book);
         model.addAttribute("book", book);
         return "redirect:/librarian";

@@ -79,7 +79,7 @@ public class SecurityService implements UserDetailsService {
 
     private Role getReaderRole() {
         Optional<Role> role = roleRepository.findRoleByName(RoleNames.READER.name());
-        if (role.isEmpty()){
+        if (role.isEmpty()) {
             role = Optional.of(roleRepository.save(new Role(RoleNames.READER.name(), getReaderPrivileges())));
         }
         return role.orElseThrow();

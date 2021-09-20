@@ -1,15 +1,16 @@
 package acc.roadmap1.library.service;
 
-import acc.roadmap1.library.controller.dto.BookDTO;
-import acc.roadmap1.library.repository.BookRepository;
+import acc.roadmap1.library.controller.dto.CreateBookItem;
+import acc.roadmap1.library.model.ApplicationUserDetails;
 import acc.roadmap1.library.model.Book;
+import acc.roadmap1.library.model.BookStatus;
+import acc.roadmap1.library.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -26,7 +27,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book create(BookDTO book) {
+    public Book create(CreateBookItem book) {
         return bookRepository.save(new Book(book.getAuthor(), book.getPublished(), book.getTitle()));
     }
 
@@ -45,5 +46,18 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteById(long theId) {
         bookRepository.deleteById(theId);
+    }
+
+    @Override
+    public List<Book> findBooksWithStatusForCurrentUser(ApplicationUserDetails userDetails) {
+        return bookRepository.findAll().stream().peek(book -> {
+            if (book.getReader().equals(userDetails.getAccount().getReader())) {
+                book.setStatus(BookStatus.CAN_RETURN);
+            } else if (!book.getReader().equals(userDetails.getAccount().getReader())) {
+                book.setStatus(BookStatus.ALREADY_TAKE);
+            } else if (book.getReader() == null) {
+                book.setStatus(BookStatus.CAN_TAKE);
+            }
+        }).collect(Collectors.toList());
     }
 }

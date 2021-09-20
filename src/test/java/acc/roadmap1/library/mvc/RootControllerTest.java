@@ -1,4 +1,4 @@
-package acc.roadmap1.library;
+package acc.roadmap1.library.mvc;
 
 import acc.roadmap1.library.model.Account;
 import acc.roadmap1.library.model.Book;
@@ -8,42 +8,29 @@ import acc.roadmap1.library.model.Privileges;
 import acc.roadmap1.library.model.Reader;
 import acc.roadmap1.library.model.Role;
 import acc.roadmap1.library.model.RoleNames;
-import acc.roadmap1.library.repository.AccountRepository;
-import acc.roadmap1.library.repository.PrivilegeRepository;
-import acc.roadmap1.library.repository.RoleRepository;
 import acc.roadmap1.library.service.BookService;
 import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.Matches;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.htmlunit.MockMvcWebClientBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class RootControllerTest extends BaseMockTest {
+public class RootControllerTest {
 
     private final MockMvc mockMvc;
 
@@ -63,10 +50,6 @@ public class RootControllerTest extends BaseMockTest {
 
     @Test
     public void checkValidTableMapping() throws IOException {
-        RequestBuilder request = MockMvcRequestBuilders
-                .get("/")
-                .accept(MediaType.TEXT_HTML);
-
         HtmlPage createMsgFormPage = webClient.getPage("http://localhost:8080");
         HtmlTable listOfBooksTable = createMsgFormPage.getHtmlElementById("list-of-books");
 
@@ -80,10 +63,6 @@ public class RootControllerTest extends BaseMockTest {
         Mockito.when(bookService.findAll()).thenReturn(List.of(
                 new Book("author", 1991, "title")
         ));
-
-        RequestBuilder request = MockMvcRequestBuilders
-                .get("/")
-                .accept(MediaType.TEXT_HTML);
 
         HtmlPage createMsgFormPage = webClient.getPage("http://localhost:8080");
         HtmlTable listOfBooksTable = createMsgFormPage.getHtmlElementById("list-of-books");
@@ -128,10 +107,6 @@ public class RootControllerTest extends BaseMockTest {
                 book
         ));
 
-        RequestBuilder request = MockMvcRequestBuilders
-                .get("/")
-                .accept(MediaType.TEXT_HTML);
-
         HtmlPage createMsgFormPage = webClient.getPage("http://localhost:8080");
         HtmlTable listOfBooksTable = createMsgFormPage.getHtmlElementById("list-of-books");
 
@@ -141,7 +116,4 @@ public class RootControllerTest extends BaseMockTest {
         Assertions.assertEquals("title", listOfBooksTable.getRow(1).getCell(1).getTextContent());
         Assertions.assertNotNull(createMsgFormPage.getForms().get(0).getInputByValue("Take"));
     }
-
-
-
 }

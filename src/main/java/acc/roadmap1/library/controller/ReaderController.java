@@ -2,18 +2,14 @@ package acc.roadmap1.library.controller;
 
 import acc.roadmap1.library.model.Book;
 import acc.roadmap1.library.model.Reader;
-import acc.roadmap1.library.service.BookService;
 import acc.roadmap1.library.service.ReaderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.Set;
 
 @Controller
