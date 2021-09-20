@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -25,7 +27,7 @@ public class Reader {
     @Column(name = "name", unique = true)
     private String name;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id")
     private Account account;
 
@@ -34,7 +36,7 @@ public class Reader {
             cascade = {CascadeType.PERSIST,
                     CascadeType.MERGE, CascadeType.DETACH,
                     CascadeType.REFRESH})
-    private List<Book> books;
+    private Set<Book> books;
 
     public Reader(String name, Account account) {
         this.name = name;
@@ -43,7 +45,7 @@ public class Reader {
 
     public void add(Book tempBook) {
         if (books == null)
-            books = new ArrayList<>();
+            books = new HashSet<>();
         books.add(tempBook);
         tempBook.setReader(this);
     }
@@ -55,12 +57,5 @@ public class Reader {
             books.remove(tempBook);
             tempBook.setReader(null);
         }
-    }
-
-    public String getAllBooks(){
-        List<String> books = this.getBooks()
-                .stream().map(book -> book.toString())
-                .collect(Collectors.toList());
-        return books.toString();
     }
 }

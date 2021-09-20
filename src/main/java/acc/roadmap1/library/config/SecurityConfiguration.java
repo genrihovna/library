@@ -25,7 +25,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public UserDetailsService userDetailsService(AccountRepository accountRepository, PasswordEncoder passwordEncoder
-            , RoleRepository roleRepository, ReaderRepository readerRepository, PrivilegeRepository privilegeRepository) {
+            , RoleRepository roleRepository, ReaderRepository readerRepository,
+                                                 PrivilegeRepository privilegeRepository) {
         return new SecurityService(accountRepository, passwordEncoder, roleRepository, readerRepository,
                 privilegeRepository);
     }
@@ -47,7 +48,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register/admin").hasAuthority("MANAGE_ACCOUNTS")
                 .antMatchers("/*").authenticated()
                 .and()
-                .formLogin().loginPage("/login").permitAll()
+                .formLogin()
+                    .loginPage("/login")
+                    .loginProcessingUrl("/login")
+                    .defaultSuccessUrl("/", true)
+                    .permitAll()
                 .and()
                 .logout().logoutSuccessUrl("/").permitAll();
     }

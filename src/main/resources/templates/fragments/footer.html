@@ -1,29 +1,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
 </head>
 <body>
-<div th:fragment="footer">
+    <div th:fragment="footer">
 
-    <div class="container">
+        <div class="container">
 
-        <footer>
+            <footer>
             <span sec:authorize="isAuthenticated()">
                 | Logged reader: <span sec:authentication="name"></span> |
                 Roles: <span sec:authentication="principal.authorities"></span> |
                 <br><br>
-                <form th:action="@{/logout}" method="post">
+                <form method="post" th:action="@{/logout}">
                 <input type="submit" value="Sign Out"/>
             </form>
             </span>
 
-            <script type="text/javascript"
-                    src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            </footer>
+        </div>
 
-        </footer>
     </div>
-
-</div>
 </body>
 </html>

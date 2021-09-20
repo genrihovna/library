@@ -14,10 +14,18 @@ public class ApplicationUserDetails implements UserDetails {
 
     private final List<GrantedAuthority> grantedAuthorities;
 
-    public ApplicationUserDetails(String username, String password, List<GrantedAuthority> grantedAuthorities) {
+    private final Account account;
+
+    public ApplicationUserDetails(String username, String password, List<GrantedAuthority> grantedAuthorities,
+                                  Account account) {
         this.username = username;
         this.password = password;
         this.grantedAuthorities = grantedAuthorities;
+        this.account = account;
+    }
+
+    public Account getAccount() {
+        return account;
     }
 
     @Override

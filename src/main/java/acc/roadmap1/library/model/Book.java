@@ -31,7 +31,7 @@ public class Book {
     private String author;
 
     @Column(name = "date")
-    private short published;
+    private int published;
 
     @Column(name = "title")
     private String title;
@@ -43,20 +43,12 @@ public class Book {
     private Reader reader;
 
     @Transient
-    private boolean status;
+    private BookStatus status;
 
-    public Book(String author, short published, String title) {
+    public Book(String author, int published, String title) {
         this.author = author;
         this.published = published;
         this.title = title;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public boolean getStatus() {
-        return reader != null;
     }
 
     public void setReader(Reader reader) {
