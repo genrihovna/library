@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -39,9 +40,9 @@ public class Role {
                     name = "role_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
                     name = "privilege_id", referencedColumnName = "id"))
-    private List<Privilege> privileges;
+    private Set<Privilege> privileges;
 
-    public Role(String name, List<Privilege> privileges) {
+    public Role(String name, Set<Privilege> privileges) {
         this.name = name;
         this.privileges = privileges;
     }

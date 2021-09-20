@@ -15,6 +15,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -40,12 +41,12 @@ public class Account {
                     name = "account_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"))
-    private List<Role> roles;
+    private Set<Role> roles;
 
     @OneToOne(mappedBy = "account")
     private Reader reader;
 
-    public Account(String username, String password, List<Role> roles) {
+    public Account(String username, String password, Set<Role> roles) {
         this.username = username;
         this.password = password;
         this.roles = roles;

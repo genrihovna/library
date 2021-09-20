@@ -37,7 +37,13 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
-            <version>3.3.7</version>
+            <version>5.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>3.6.0</version>
         </dependency>
 
         <dependency>
@@ -74,6 +80,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sourceforge.htmlunit</groupId>
+            <artifactId>htmlunit</artifactId>
+            <version>2.53.0</version>
         </dependency>
 
         <dependency>
@@ -130,12 +142,15 @@
                     <user>root</user>
                     <password>root</password>
                     <locations>filesystem:./migrations</locations>
-                    <url>jdbc:mysql://localhost:3306/library_management_system</url>
-                    <schemas>library_management_system</schemas>
+                    <url>jdbc:mysql://localhost:3306/best_library</url>
+                    <schemas>best_library</schemas>
                     <ignorePendingMigrations>true</ignorePendingMigrations>
                 </configuration>
             </plugin>
+
         </plugins>
+
+
     </build>
 
 </project>

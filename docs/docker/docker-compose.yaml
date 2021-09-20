@@ -9,7 +9,7 @@ services:
       - db_volume:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: library_management_system
+      MYSQL_DATABASE: best_library
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     ports:
