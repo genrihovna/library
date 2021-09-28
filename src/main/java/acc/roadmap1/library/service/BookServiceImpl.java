@@ -10,10 +10,8 @@ import acc.roadmap1.library.repository.ReaderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,13 +58,22 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> findBooksWithStatusForCurrentUser(ApplicationUserDetails userDetails) {
         return bookRepository.findAll().stream().peek(book -> {
-            if (book.getReader().equals(userDetails.getAccount().getReader())) {
-                book.setStatus(BookStatus.CAN_RETURN);
-            } else if (!book.getReader().equals(userDetails.getAccount().getReader())) {
-                book.setStatus(BookStatus.ALREADY_TAKEN);
-            } else if (book.getReader() == null) {
+
+            if (book.getReader().isEmpty()) {
                 book.setStatus(BookStatus.CAN_TAKE);
+            } else {
+                if (userDetails != null) {
+                    if (book.getReader().get().equals(userDetails.getAccount().getReader())) {
+                        book.setStatus(BookStatus.CAN_RETURN);
+                    } else if (!book.getReader().get().equals(userDetails.getAccount().getReader())) {
+                        book.setStatus(BookStatus.ALREADY_TAKEN);
+                    }
+                }
             }
+
+//            else if (book.getReader().get() == null) {
+//                book.setStatus(BookStatus.CAN_TAKE);
+//            }
         }).collect(Collectors.toList());
     }
 

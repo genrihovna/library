@@ -11,13 +11,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.security.Principal;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/books")
@@ -70,8 +64,8 @@ public class BooksController {
         if (reader.getBooks().contains(book)) {
             throw new RuntimeException("This book is already in your list.");
         } else {
-            readerService.takeABook(userDetails, bookId);
-            readerService.save(reader);
+            bookService.handOverBook(bookId, reader.getId());
+            //reader = readerService.takeABook(userDetails, bookId);
             attribute.addAttribute("reader", reader);
             attribute.addAttribute("readersBooks", reader.getBooks());
         }
@@ -79,7 +73,7 @@ public class BooksController {
     }
 
     @PostMapping("/return")
-    public String returnABook(@RequestParam(name = "id") long bookId,
+    public String returnABook(@RequestParam(name = "theBook") long bookId,
                               @AuthenticationPrincipal ApplicationUserDetails userDetails, Model model) {
         Book book = bookService.findById(bookId);
         Reader reader = userDetails.getAccount().getReader();

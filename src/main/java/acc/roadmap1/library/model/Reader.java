@@ -5,18 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import java.util.HashSet;
+import javax.persistence.*;
 import java.util.Set;
 
 @Entity
@@ -39,7 +28,7 @@ public class Reader {
     private Account account;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "reader",
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "reader",
             cascade = {CascadeType.PERSIST,
                     CascadeType.MERGE, CascadeType.DETACH,
                     CascadeType.REFRESH})
@@ -48,6 +37,10 @@ public class Reader {
     public Reader(String name, Account account) {
         this.name = name;
         this.account = account;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
     }
 
     public void handOver(final Book tempBook) {

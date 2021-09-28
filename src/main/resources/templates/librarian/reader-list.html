@@ -9,43 +9,43 @@
     <div th:replace="fragments/header :: header-libs"/>
 </head>
 <body>
-    <div th:replace="fragments/header :: header"/>
-    <div class="container">
+<div th:replace="fragments/header :: header"/>
+<div class="container">
 
-        <h1>Reader List</h1>
-        <br>
-        <br>
-        <a th:href="@{/register}">Register new reader</a>
-        <br>
-        <br>
-        <h3>Readers</h3>
-        <table class="table table-bordered table-striped">
-            <thead class="thead-dark">
-            <tr>
-                <th>Name</th>
-                <th>Account</th>
-                <th>Books</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="tempReader : ${readers}">
-                <td th:text="${tempReader.name}"/>
-                <td th:text="${tempReader.account.username}"/>
-                <td th:text="${tempReader.books}"/>
-            </tr>
-            </tbody>
-        </table>
+    <h1>Reader List</h1>
+    <br>
+    <br>
+    <a th:href="@{/register}">Register new reader</a>
+    <br>
+    <br>
+    <h3>Readers</h3>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Name</th>
+            <th>Account</th>
+            <th>Books</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="tempReader : ${readers}">
+            <td th:text="${tempReader.name}"/>
+            <td th:text="${tempReader.account.username}"/>
+            <td th:text="${tempReader.books}"/>
+        </tr>
+        </tbody>
+    </table>
 
-        <br>
-        <br>
-        <a th:href="@{/librarian}">Return to librarian page</a>
-        <br>
-        <br>
-        <a th:href="@{/}">Return to Welcome page</a>
-        <br>
-        <br>
+    <br>
+    <br>
+    <a th:href="@{/librarian}">Return to librarian page</a>
+    <br>
+    <br>
+    <a th:href="@{/}">Return to Welcome page</a>
+    <br>
+    <br>
 
-    </div>
-    <div th:replace="fragments/footer :: footer"/>
+</div>
+<div th:replace="fragments/footer :: footer"/>
 </body>
 </html>

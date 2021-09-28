@@ -1,10 +1,12 @@
 package acc.roadmap1.library.controller;
 
 import acc.roadmap1.library.controller.dto.RegisterAccount;
+import acc.roadmap1.library.model.ApplicationUserDetails;
 import acc.roadmap1.library.model.Book;
 import acc.roadmap1.library.service.BookService;
 import acc.roadmap1.library.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,8 +30,9 @@ public class RootController {
     }
 
     @GetMapping("/")
-    public String getMainPage(Model model) {
-        List<Book> books = bookService.findAll();
+    public String getMainPage(Model model,
+                              @AuthenticationPrincipal ApplicationUserDetails userDetails) {
+        List<Book> books = bookService.findBooksWithStatusForCurrentUser(userDetails);
         model.addAttribute("books", books);
         return "index";
     }

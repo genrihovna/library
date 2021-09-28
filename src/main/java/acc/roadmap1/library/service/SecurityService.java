@@ -1,12 +1,6 @@
 package acc.roadmap1.library.service;
 
-import acc.roadmap1.library.model.Account;
-import acc.roadmap1.library.model.ApplicationUserDetails;
-import acc.roadmap1.library.model.Privilege;
-import acc.roadmap1.library.model.Privileges;
-import acc.roadmap1.library.model.Reader;
-import acc.roadmap1.library.model.Role;
-import acc.roadmap1.library.model.RoleNames;
+import acc.roadmap1.library.model.*;
 import acc.roadmap1.library.repository.AccountRepository;
 import acc.roadmap1.library.repository.PrivilegeRepository;
 import acc.roadmap1.library.repository.ReaderRepository;
@@ -59,7 +53,7 @@ public class SecurityService implements UserDetailsService {
     }
 
     public void createLibrarianAccount(String username, String password, String name) {
-        Role adminRole = getRole("admin");
+        Role adminRole = getRole(RoleNames.ADMIN.name(), getDefaultAdminPrivileges());
 
         Account account = new Account(username, passwordEncoder.encode(password), Set.of(adminRole));
         account = accountRepository.save(account);
@@ -69,7 +63,7 @@ public class SecurityService implements UserDetailsService {
     }
 
     public void createReaderAccount(String username, String password, String name) {
-        Role readerRole = getRole("reader");
+        Role readerRole = getRole(RoleNames.READER.name(), getReaderPrivileges());
 
         Account account = new Account(username, passwordEncoder.encode(password), Set.of(readerRole));
         account = accountRepository.save(account);
@@ -79,15 +73,11 @@ public class SecurityService implements UserDetailsService {
     }
 
     @NotNull
-    private Role getRole(String roleName) {
+    private Role getRole(String roleName, Set<Privilege> privileges) {
         Optional<Role> role = roleRepository.findRoleByName(roleName);
-            if (role.isEmpty()) {
-                if(roleName.equalsIgnoreCase(RoleNames.READER.name())) {
-                    role = Optional.of(roleRepository.save(new Role(roleName, getReaderPrivileges())));
-                } else if(roleName.equalsIgnoreCase(RoleNames.ADMIN.name())){
-                    role = Optional.of(roleRepository.save(new Role(roleName, getDefaultAdminPrivileges())));
-                }
-            }
+        if (role.isEmpty()) {
+            role = Optional.of(roleRepository.save(new Role(roleName, privileges)));
+        }
         return role.orElseThrow();
     }
 

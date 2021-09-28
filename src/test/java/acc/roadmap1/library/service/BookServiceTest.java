@@ -1,15 +1,10 @@
 package acc.roadmap1.library.service;
 
-import acc.roadmap1.library.model.Account;
-import acc.roadmap1.library.model.ApplicationUserDetails;
-import acc.roadmap1.library.model.Book;
-import acc.roadmap1.library.model.BookStatus;
-import acc.roadmap1.library.model.Reader;
+import acc.roadmap1.library.model.*;
 import acc.roadmap1.library.repository.BookRepository;
 import acc.roadmap1.library.repository.ReaderRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,8 +15,6 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-
-import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
 class BookServiceTest {
@@ -104,6 +97,6 @@ class BookServiceTest {
         result = bookService.findBooksWithStatusForCurrentUser(userDetails).get(0);
 
         Assertions.assertTrue(result.getReader().isPresent());
-        Assertions.assertEquals(BookStatus.ALREADY_TAKE, result.getStatus());
+        Assertions.assertEquals(BookStatus.ALREADY_TAKEN, result.getStatus());
     }
 }

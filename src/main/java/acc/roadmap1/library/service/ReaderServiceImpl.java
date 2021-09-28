@@ -1,6 +1,5 @@
 package acc.roadmap1.library.service;
 
-import acc.roadmap1.library.controller.dto.CreateBookItem;
 import acc.roadmap1.library.model.Account;
 import acc.roadmap1.library.model.ApplicationUserDetails;
 import acc.roadmap1.library.model.Book;
@@ -49,13 +48,14 @@ public class ReaderServiceImpl implements ReaderService {
     }
 
     @Override
-    public void takeABook(ApplicationUserDetails userDetails, long bookId) {
+    public Reader takeABook(ApplicationUserDetails userDetails, long bookId) {
         Reader currentReader = userDetails.getAccount().getReader();
         Set<Book> books = currentReader.getBooks();
         if (books == null)
             books = new HashSet<>();
-        Book currentBook = bookRepository.getById(bookId);
+        Book currentBook = bookRepository.findById(bookId).orElseThrow();
         books.add(currentBook);
-        bookRepository.save(currentBook);
+        currentReader.setBooks(books);
+        return readerRepository.save(currentReader);
     }
 }

@@ -9,67 +9,67 @@
     <div th:replace="fragments/header :: header-libs"/>
 </head>
 <body>
-    <div th:replace="fragments/header :: header"/>
-    <div class="container">
-        <h1>Book Management (only for Librarians)</h1>
-        <br>
-        <br>
-        <a class="btn btn-info btn-sm"
-           th:href="@{/books/add}">
-            Add new book
-        </a>
-        <h3>List of books</h3>
-        <table class="table table-bordered table-striped">
-            <thead class="thead-dark">
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Published</th>
-                <th>Status</th>
-                <th>Action</th>
-                <th>Reader name</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="tempBook : ${books}">
-                <td th:text="${tempBook.id}"/>
-                <td th:text="${tempBook.title}"/>
-                <td th:text="${tempBook.author}"/>
-                <td th:text="${tempBook.published}"/>
-                <td>
-                    <div class="bookStatus" th:if="${tempBook.status != T(acc.roadmap1.library.model.BookStatus).CAN_TAKE}">
-                        in hands
-                    </div>
-                    <div class="bookStatus" th:if="${tempBook.status == T(acc.roadmap1.library.model.BookStatus).CAN_TAKE}">
-                        free
-                    </div>
-                </td>
-                <td>
-                    <a class="btn btn-info btn-sm"
-                       th:href="@{/books/update(id=${tempBook.id})}">
-                        Update
-                    </a>
-                    <a class="btn btn-danger btn-sm"
-                       onclick="if(!(confirm ('Are you sure to delete this book?'))) return false"
-                       th:href="@{/books/delete(id=${tempBook.id})}">
-                        Delete
-                    </a>
-                </td>
-                <td>
-                    <div th:if="${tempBook.getReader() != null}">
-                        <span th:text="${tempBook.getReader().getName()}"></span>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <br><br>
-        <div>
-            <a th:href="@{/librarian/readers}">Reader List</a>
-        </div>
-        <br>
+<div th:replace="fragments/header :: header"/>
+<div class="container">
+    <h1>Book Management (only for Librarians)</h1>
+    <br>
+    <br>
+    <a class="btn btn-info btn-sm"
+       th:href="@{/books/add}">
+        Add new book
+    </a>
+    <h3>List of books</h3>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Published</th>
+            <th>Status</th>
+            <th>Action</th>
+            <th>Reader name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="tempBook : ${books}">
+            <td th:text="${tempBook.id}"/>
+            <td th:text="${tempBook.title}"/>
+            <td th:text="${tempBook.author}"/>
+            <td th:text="${tempBook.published}"/>
+            <td>
+                <div class="bookStatus" th:if="${tempBook.status != T(acc.roadmap1.library.model.BookStatus).CAN_TAKE}">
+                    in hands
+                </div>
+                <div class="bookStatus" th:if="${tempBook.status == T(acc.roadmap1.library.model.BookStatus).CAN_TAKE}">
+                    free
+                </div>
+            </td>
+            <td>
+                <a class="btn btn-info btn-sm"
+                   th:href="@{/books/update(id=${tempBook.id})}">
+                    Update
+                </a>
+                <a class="btn btn-danger btn-sm"
+                   onclick="if(!(confirm ('Are you sure to delete this book?'))) return false"
+                   th:href="@{/books/delete(id=${tempBook.id})}">
+                    Delete
+                </a>
+            </td>
+            <td>
+                <div th:if="${tempBook.getReader().isPresent()}">
+                    <span th:text="${tempBook.getReader().get().getName()}"></span>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br><br>
+    <div>
+        <a th:href="@{/librarian/readers}">Reader List</a>
     </div>
-    <div th:replace="fragments/footer :: footer"/>
+    <br>
+</div>
+<div th:replace="fragments/footer :: footer"/>
 </body>
 </html>
