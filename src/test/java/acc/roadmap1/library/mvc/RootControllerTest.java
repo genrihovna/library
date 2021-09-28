@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.htmlunit.MockMvcWebClientBuilder;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @SpringBootTest
@@ -81,15 +82,17 @@ public class RootControllerTest {
 
         Mockito.when(book.getReader())
                 .thenReturn(
-                        new Reader(
-                                "test",
-                                new Account(
+                        Optional.of(
+                                new Reader(
                                         "test",
-                                        "123456",
-                                        Collections.singleton(
-                                                new Role(RoleNames.READER.name(),
-                                                        Set.of(
-                                                                new Privilege(Privileges.MANAGE_BOOKS.name())
+                                        new Account(
+                                                "test",
+                                                "123456",
+                                                Collections.singleton(
+                                                        new Role(RoleNames.READER.name(),
+                                                                Set.of(
+                                                                        new Privilege(Privileges.MANAGE_BOOKS.name())
+                                                                )
                                                         )
                                                 )
                                         )

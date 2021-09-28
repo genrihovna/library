@@ -6,6 +6,7 @@ import acc.roadmap1.library.model.Book;
 import acc.roadmap1.library.model.BookStatus;
 import acc.roadmap1.library.model.Reader;
 import acc.roadmap1.library.repository.BookRepository;
+import acc.roadmap1.library.repository.ReaderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +20,12 @@ import java.util.stream.Collectors;
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
 
+    private final ReaderRepository readerRepository;
+
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository) {
+    public BookServiceImpl(BookRepository bookRepository, ReaderRepository readerRepository) {
         this.bookRepository = bookRepository;
+        this.readerRepository = readerRepository;
     }
 
     @Override
@@ -39,13 +43,13 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book findById(long theId) {
         Optional<Book> result = bookRepository.findById(theId);
-        Book theBook = null;
+        Book book;
         if (result.isPresent()) {
-            theBook = result.get();
+            book = result.get();
         } else {
             throw new RuntimeException("Did not get book - " + theId);
         }
-        return theBook;
+        return book;
     }
 
     @Override
@@ -64,5 +68,17 @@ public class BookServiceImpl implements BookService {
                 book.setStatus(BookStatus.CAN_TAKE);
             }
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public Book handOverBook(long bookId, long readerId) {
+
+        Reader reader = readerRepository.findById(readerId).orElseThrow();
+
+        return bookRepository.findById(bookId).map(book -> {
+            book.setReader(reader);
+
+            return bookRepository.save(book);
+        }).orElseThrow();
     }
 }

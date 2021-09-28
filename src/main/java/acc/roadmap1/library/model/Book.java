@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.util.Optional;
 
 @Entity
 @Data
@@ -51,6 +52,10 @@ public class Book {
 
     public void setReader(Reader reader) {
         this.reader = reader;
+    }
+
+    public Optional<Reader> getReader() {
+        return Optional.ofNullable(reader);
     }
 
     @Override

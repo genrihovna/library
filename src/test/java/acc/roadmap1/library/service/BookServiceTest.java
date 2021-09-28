@@ -6,14 +6,20 @@ import acc.roadmap1.library.model.Book;
 import acc.roadmap1.library.model.BookStatus;
 import acc.roadmap1.library.model.Reader;
 import acc.roadmap1.library.repository.BookRepository;
+import acc.roadmap1.library.repository.ReaderRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 
 import static org.mockito.ArgumentMatchers.any;
 
@@ -21,8 +27,12 @@ import static org.mockito.ArgumentMatchers.any;
 class BookServiceTest {
 
     private final BookService bookService;
+
     @MockBean
     private BookRepository bookRepository;
+
+    @MockBean
+    private ReaderRepository readerRepository;
 
     @Autowired
     BookServiceTest(BookService bookService) {
@@ -67,5 +77,33 @@ class BookServiceTest {
         var result1 = bookService.findBooksWithStatusForCurrentUser(userDetails);
         Assertions.assertTrue(result1.size() > 0);
         Assertions.assertEquals(BookStatus.CAN_TAKE, result1.get(0).getStatus());
+    }
+
+    @Test
+    public void testHandoverBook() {
+
+        Account account = Mockito.mock(Account.class);
+        Reader reader = Mockito.mock(Reader.class);
+        Book book = new Book("author", 1991, "title");
+        ApplicationUserDetails userDetails = Mockito.mock(ApplicationUserDetails.class);
+
+        Mockito.when(userDetails.getAccount()).thenReturn(account);
+        Mockito.when(readerRepository.findById(anyLong())).thenReturn(Optional.of(reader));
+        Mockito.when(account.getReader()).thenReturn(reader);
+
+        Mockito.when(bookRepository.findById(anyLong())).thenReturn(Optional.of(book));
+
+        book.setReader(reader);
+
+        Mockito.when(bookRepository.save(any())).thenReturn(book);
+
+        var result = bookService.handOverBook(1, 1);
+
+        Mockito.when(bookService.findBooksWithStatusForCurrentUser(userDetails)).thenReturn(List.of(book));
+
+        result = bookService.findBooksWithStatusForCurrentUser(userDetails).get(0);
+
+        Assertions.assertTrue(result.getReader().isPresent());
+        Assertions.assertEquals(BookStatus.ALREADY_TAKE, result.getStatus());
     }
 }
