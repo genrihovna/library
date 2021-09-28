@@ -15,6 +15,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+
 @SpringBootTest
 class BookServiceTest {
 
@@ -39,6 +41,8 @@ class BookServiceTest {
         Book book = new Book("author", 1991, "title");
         book.setReader(reader);
 
+        reader.handOver(book);
+
         Mockito.when(bookRepository.findAll()).thenReturn(List.of(
                 book
         ));
@@ -47,9 +51,21 @@ class BookServiceTest {
 
         Mockito.when(userDetails.getAccount()).thenReturn(account);
 
-        var result = bookService.findBooksWithStatusForCurrentUser(userDetails);
+//        var result = bookService.findBooksWithStatusForCurrentUser(userDetails);
+//
+//        Assertions.assertTrue(result.size() > 0);
+//        Assertions.assertEquals(BookStatus.CAN_RETURN, result.get(0).getStatus());
 
-        Assertions.assertTrue(result.size() > 0);
-        Assertions.assertEquals(BookStatus.CAN_RETURN, result.get(0).getStatus());
+//        book.setReader(null);
+        // Изменили book - у book есть reader
+//        reader.handOver(book);
+//
+//        Mockito.when(bookRepository.findAll()).thenReturn(List.of(
+//                book
+//        ));
+
+        var result1 = bookService.findBooksWithStatusForCurrentUser(userDetails);
+        Assertions.assertTrue(result1.size() > 0);
+        Assertions.assertEquals(BookStatus.CAN_TAKE, result1.get(0).getStatus());
     }
 }

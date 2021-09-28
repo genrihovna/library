@@ -11,6 +11,7 @@ import acc.roadmap1.library.repository.AccountRepository;
 import acc.roadmap1.library.repository.PrivilegeRepository;
 import acc.roadmap1.library.repository.ReaderRepository;
 import acc.roadmap1.library.repository.RoleRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -58,7 +59,7 @@ public class SecurityService implements UserDetailsService {
     }
 
     public void createLibrarianAccount(String username, String password, String name) {
-        Role adminRole = getAdminRole();
+        Role adminRole = getRole("admin");
 
         Account account = new Account(username, passwordEncoder.encode(password), Set.of(adminRole));
         account = accountRepository.save(account);
@@ -68,7 +69,7 @@ public class SecurityService implements UserDetailsService {
     }
 
     public void createReaderAccount(String username, String password, String name) {
-        Role readerRole = getReaderRole();
+        Role readerRole = getRole("reader");
 
         Account account = new Account(username, passwordEncoder.encode(password), Set.of(readerRole));
         account = accountRepository.save(account);
@@ -77,21 +78,16 @@ public class SecurityService implements UserDetailsService {
         readerRepository.save(reader);
     }
 
-    private Role getReaderRole() {
-        Optional<Role> role = roleRepository.findRoleByName(RoleNames.READER.name());
-        if (role.isEmpty()) {
-            role = Optional.of(roleRepository.save(new Role(RoleNames.READER.name(), getReaderPrivileges())));
-        }
-        return role.orElseThrow();
-    }
-
-    private Role getAdminRole() {
-        Optional<Role> role = roleRepository.findRoleByName(RoleNames.ADMIN.name());
-
-        if (role.isEmpty()) {
-            role = Optional.of(roleRepository.save(new Role(RoleNames.ADMIN.name(), getDefaultAdminPrivileges())));
-        }
-
+    @NotNull
+    private Role getRole(String roleName) {
+        Optional<Role> role = roleRepository.findRoleByName(roleName);
+            if (role.isEmpty()) {
+                if(roleName.equalsIgnoreCase(RoleNames.READER.name())) {
+                    role = Optional.of(roleRepository.save(new Role(roleName, getReaderPrivileges())));
+                } else if(roleName.equalsIgnoreCase(RoleNames.ADMIN.name())){
+                    role = Optional.of(roleRepository.save(new Role(roleName, getDefaultAdminPrivileges())));
+                }
+            }
         return role.orElseThrow();
     }
 

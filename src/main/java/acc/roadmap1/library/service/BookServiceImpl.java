@@ -4,12 +4,15 @@ import acc.roadmap1.library.controller.dto.CreateBookItem;
 import acc.roadmap1.library.model.ApplicationUserDetails;
 import acc.roadmap1.library.model.Book;
 import acc.roadmap1.library.model.BookStatus;
+import acc.roadmap1.library.model.Reader;
 import acc.roadmap1.library.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +31,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book create(CreateBookItem book) {
+
+
         return bookRepository.save(new Book(book.getAuthor(), book.getPublished(), book.getTitle()));
     }
 
@@ -54,7 +59,7 @@ public class BookServiceImpl implements BookService {
             if (book.getReader().equals(userDetails.getAccount().getReader())) {
                 book.setStatus(BookStatus.CAN_RETURN);
             } else if (!book.getReader().equals(userDetails.getAccount().getReader())) {
-                book.setStatus(BookStatus.ALREADY_TAKE);
+                book.setStatus(BookStatus.ALREADY_TAKEN);
             } else if (book.getReader() == null) {
                 book.setStatus(BookStatus.CAN_TAKE);
             }

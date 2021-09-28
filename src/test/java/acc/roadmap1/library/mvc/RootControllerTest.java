@@ -51,7 +51,7 @@ public class RootControllerTest {
     @Test
     public void checkValidTableMapping() throws IOException {
         HtmlPage createMsgFormPage = webClient.getPage("http://localhost:8080");
-        HtmlTable listOfBooksTable = createMsgFormPage.getHtmlElementById("list-of-books");
+        HtmlTable listOfBooksTable = createMsgFormPage.getHtmlElementById("list-books");
 
         Assertions.assertEquals("List of books", listOfBooksTable.getCaptionText());
         Assertions.assertEquals(1, listOfBooksTable.getRowCount());
@@ -65,7 +65,7 @@ public class RootControllerTest {
         ));
 
         HtmlPage createMsgFormPage = webClient.getPage("http://localhost:8080");
-        HtmlTable listOfBooksTable = createMsgFormPage.getHtmlElementById("list-of-books");
+        HtmlTable listOfBooksTable = createMsgFormPage.getHtmlElementById("list-books");
 
         Assertions.assertEquals("List of books", listOfBooksTable.getCaptionText());
         Assertions.assertEquals(2, listOfBooksTable.getRowCount());
@@ -108,7 +108,7 @@ public class RootControllerTest {
         ));
 
         HtmlPage createMsgFormPage = webClient.getPage("http://localhost:8080");
-        HtmlTable listOfBooksTable = createMsgFormPage.getHtmlElementById("list-of-books");
+        HtmlTable listOfBooksTable = createMsgFormPage.getHtmlElementById("list-books");
 
         Assertions.assertEquals("List of books", listOfBooksTable.getCaptionText());
         Assertions.assertEquals(2, listOfBooksTable.getRowCount());

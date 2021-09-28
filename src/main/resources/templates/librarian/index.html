@@ -28,6 +28,7 @@
                 <th>Published</th>
                 <th>Status</th>
                 <th>Action</th>
+                <th>Reader name</th>
             </tr>
             </thead>
             <tbody>
@@ -37,10 +38,10 @@
                 <td th:text="${tempBook.author}"/>
                 <td th:text="${tempBook.published}"/>
                 <td>
-                    <div class="bookStatus" th:if="${tempBook.status} == true">
-                        <span th:text="${tempBook.getReader().getName()}"/>
+                    <div class="bookStatus" th:if="${tempBook.status != T(acc.roadmap1.library.model.BookStatus).CAN_TAKE}">
+                        in hands
                     </div>
-                    <div class="bookStatus" th:if="${tempBook.status} == false">
+                    <div class="bookStatus" th:if="${tempBook.status == T(acc.roadmap1.library.model.BookStatus).CAN_TAKE}">
                         free
                     </div>
                 </td>
@@ -54,6 +55,11 @@
                        th:href="@{/books/delete(id=${tempBook.id})}">
                         Delete
                     </a>
+                </td>
+                <td>
+                    <div th:if="${tempBook.getReader() != null}">
+                        <span th:text="${tempBook.getReader().getName()}"></span>
+                    </div>
                 </td>
             </tr>
             </tbody>

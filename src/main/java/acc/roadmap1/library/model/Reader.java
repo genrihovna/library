@@ -50,14 +50,7 @@ public class Reader {
         this.account = account;
     }
 
-    public void add(Book tempBook) {
-        if (books == null)
-            books = new HashSet<>();
-        books.add(tempBook);
-        tempBook.setReader(this);
-    }
-
-    public void handOver(Book tempBook) {
+    public void handOver(final Book tempBook) {
         if (!books.contains(tempBook)) {
             throw new RuntimeException("Book " + tempBook.toString() + " is not found");
         } else {

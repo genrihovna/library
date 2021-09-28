@@ -49,29 +49,28 @@ public class BooksController {
     }
 
     @GetMapping("/delete")
-    public String deleteABook(@RequestParam("id") int id) {
+    public String deleteABook(@RequestParam("id") long id) {
         bookService.deleteById(id);
         return "redirect:/librarian";
     }
 
     @GetMapping("/update")
-    public String updateABook(@RequestParam("id") int id, Model theModel) {
+    public String updateABook(@RequestParam("id") long id, Model theModel) {
         Book book = bookService.findById(id);
-        theModel.addAttribute("book", book);
         return "books/add";
     }
 
     @PostMapping("/take")
-    public String takeABook(@RequestParam(name = "id") Integer bookId,
-                            Principal principal,
+    public String takeABook(@RequestParam(name = "id") long bookId,
+                            @AuthenticationPrincipal ApplicationUserDetails userDetails,
                             Model attribute) {
         Book book = bookService.findById(bookId);
-        String readerName = principal.getName();
+        String readerName = userDetails.getUsername();
         Reader reader = readerService.findByName(readerName);
         if (reader.getBooks().contains(book)) {
             throw new RuntimeException("This book is already in your list.");
         } else {
-            reader.add(book);
+            readerService.takeABook(userDetails, bookId);
             readerService.save(reader);
             attribute.addAttribute("reader", reader);
             attribute.addAttribute("readersBooks", reader.getBooks());
@@ -80,7 +79,7 @@ public class BooksController {
     }
 
     @PostMapping("/return")
-    public String returnABook(@RequestParam(name = "id") Integer bookId,
+    public String returnABook(@RequestParam(name = "id") long bookId,
                               @AuthenticationPrincipal ApplicationUserDetails userDetails, Model model) {
         Book book = bookService.findById(bookId);
         Reader reader = userDetails.getAccount().getReader();

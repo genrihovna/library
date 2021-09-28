@@ -11,71 +11,86 @@
 <body>
     <div th:replace="fragments/header :: header"/>
 
-    <div class="container mt-1">
+    <div class="container 1">
         <div class="starter">
             <h2>
-                <div sec:authorize="hasAuthority('MANAGE_BOOKS')">
-                    Visit <a th:href="@{/users}">your Profile Page</a>
+                <div sec:authorize="isAuthenticated()">
+                    Visit <a th:href="@{/users}">your Profile page</a>
                 </div>
             </h2>
             <h2>
-                <div sec:authorize="hasAuthority('MANAGE_BOOKS')">
+                <div sec:authorize="hasAuthority('MANAGE_ACCOUNTS')">
                     Visit <a th:href="@{/librarian}">Librarian Page</a>
                 </div>
             </h2>
         </div>
-
-        <table class="table table-bordered table-striped caption-top" id="list-of-books">
-            <caption class="fs-2 fw-bold">List of books</caption>
+        <table class="table table-bordered table-striped caption-top" id="list-books">
+            <caption class="fs-2 fw-bold">List of Books</caption>
             <thead class="thead-dark">
             <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Title</th>
-                <th scope="col">Author</th>
-                <th scope="col">Published</th>
-                <th scope="col">Status</th>
-                <th scope="col" sec:authorize="hasAuthority('MANAGE_BOOKS')">Action</th>
-                <th scope="col" sec:authorize="hasAuthority('MANAGE_BOOKS')">Reader name</th>
+                <th scope="col" sec:authorize="hasAuthority('MANAGE_ACCOUNTS')">id</th>
+                <th scope="col">title</th>
+                <th scope="col">author</th>
+                <th scope="col">published</th>
+                <th scope="col">status</th>
+                <th scope="col" sec:authorize="hasAuthority('MANAGE_BOOKS')">action</th>
+                <th scope="col" sec:authorize="hasAuthority('MANAGE_ACCOUNTS')">reader name</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="book : ${books}">
-                <td th:text="${book.id}"></td>
-                <td th:text="${book.title}"></td>
-                <td th:text="${book.author}"></td>
-                <td th:text="${book.published}"></td>
+            <tr th:each="theBook : ${books}">
+                <td scope="col" sec:authorize="hasAuthority('MANAGE_ACCOUNTS')" th:text="${theBook.id}"></td>
+                <td th:text="${theBook.title}"></td>
+                <td th:text="${theBook.author}"></td>
+                <td th:text="${theBook.published}"></td>
                 <td>
-                    <div class="bookStatus"
-                         th:if="${book.status} == true">
+<!--                    <div th:switch="${theBook.status}">-->
+<!--                        <p th:case="'CAN_RETURN'">-->
+<!--                            <span th:text="In hands"></span>-->
+<!--                        </p>-->
+<!--                        <p th:case="'ALREADY_TAKEN'">-->
+<!--                            In hands-->
+<!--                        </p>-->
+<!--                        <p th:case="'CAN_TAKE'">-->
+<!--                            Free-->
+<!--                        </p>-->
+<!--                    </div>-->
+                    <span th:if="${#strings.toString(theBook.status == T(acc.roadmap1.library.model.BookStatus).ALREADY_TAKEN)}">
                         In hands
-                    </div>
-                    <div class="bookStatus"
-                         th:if="${book.status} == false">
+                    </span>
+                    <span th:if="${#strings.toString(theBook.status == T(acc.roadmap1.library.model.BookStatus).CAN_RETURN)}">
+                        In hands
+                    </span>
+                    <span th:if="${#strings.toString(theBook.status == T(acc.roadmap1.library.model.BookStatus).CAN_TAKE)}">
                         Free
-                    </div>
+                    </span>
                 </td>
-                <td sec:authorize="hasAuthority('MANAGE_BOOKS')">
+                <td scope="col" sec:authorize="hasAuthority('MANAGE_BOOKS')">
                     <div
-                            th:if="${book.status == T(acc.roadmap1.library.model.BookStatus).CAN_TAKE}">
+                            th:if="${theBook.status == T(acc.roadmap1.library.model.BookStatus).CAN_TAKE}">
                         <form action="#"
                               method="post"
                               th:action="@{/books/take(id=${book.id})}"
                               th:object="${reader}">
+                            <input type="submit" name="take" value="Take"/>
                             <input name="take" type="submit" value="Take"/>
                         </form>
                     </div>
                     <div sec:authorize="hasAuthority('MANAGE_BOOKS')"
-                         th:if="${book.status == T(acc.roadmap1.library.model.BookStatus).CAN_RETURN}">
+                         th:if="${theBook.status == T(acc.roadmap1.library.model.BookStatus).CAN_RETURN}">
                         <form action="#"
                               method="post"
                               th:action="@{/books/return(id=${book.id})}"
                               th:object="${reader}">
+                            <input type="submit" name="return" value="Take out"/>
                             <input name="return" type="submit" value="Take out"/>
                         </form>
                     </div>
                 </td>
-                <td sec:authorize="hasAuthority('MANAGE_BOOKS')">
-                    <span th:text="${book.getReader().getName()}"></span>
+                <td sec:authorize="hasAuthority('MANAGE_ACCOUNTS')">
+                    <div th:if="${theBook.getReader() != null}">
+                        <span th:text="${theBook.getReader().getName()}"></span>
+                    </div>
                 </td>
             </tr>
             </tbody>
