@@ -17,4 +17,6 @@ public interface BookService {
     void deleteById(long booksId);
 
     List<Book> findBooksWithStatusForCurrentUser(ApplicationUserDetails userDetails);
+
+    Book handOverBook(long bookId, long readerId);
 }
