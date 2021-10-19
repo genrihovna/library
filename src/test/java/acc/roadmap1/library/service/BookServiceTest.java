@@ -1,8 +1,10 @@
 package acc.roadmap1.library.service;
 
+import acc.roadmap1.library.controller.dto.CreateBookItem;
 import acc.roadmap1.library.model.*;
 import acc.roadmap1.library.repository.BookRepository;
 import acc.roadmap1.library.repository.ReaderRepository;
+import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -98,5 +100,29 @@ class BookServiceTest {
 
         Assertions.assertTrue(result.getReader().isPresent());
         Assertions.assertEquals(BookStatus.ALREADY_TAKEN, result.getStatus());
+    }
+
+    @Test
+    public void librarianAddsNewBookTest(){
+        Book newBook = new Book("new author", 2000, "new book");
+        Mockito.when(bookService.create(new CreateBookItem())).thenReturn(newBook);
+
+        Book justCreatedBook = bookService.create(new CreateBookItem());
+        Assertions.assertEquals(justCreatedBook.getAuthor(), "new author");
+        Assertions.assertEquals(justCreatedBook.getPublished(), 2000);
+        Assertions.assertEquals(justCreatedBook.getTitle(), "new book");
+    }
+
+    @Test
+    public void deleteSomeBook(){
+        Book newBook = new Book("new author", 2000, "new book");
+        Mockito.when(bookService.findById(anyLong())).thenReturn(newBook);
+        //Mockito.when(bookService.deleteById(newBook.getId())).then(new RuntimeException("Did not get book - " + newBook.getId()));
+
+        Book justFoundBook = bookService.findById(0);
+
+        bookService.deleteById(justFoundBook.getId());
+        Assertions.assertNull(justFoundBook);
+        //Assertions.assertThrows(Throwable.class, new RuntimeException(), "Did not get book - " + justFoundBook.getId());
     }
 }
