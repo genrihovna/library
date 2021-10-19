@@ -3,8 +3,15 @@ version: "3"
 services:
   sonarqube:
     image: sonarqube:9-community
+    depends_on:
+      - init
     container_name: sonarqube
     restart: always
+    ulimits:
+      nproc: 131072
+      nofile:
+        soft: 8192
+        hard: 131072
     environment:
       - SONARQUBE_JDBC_URL=jdbc:postgresql://db:5432/sonar
       - SONARQUBE_JDBC_USERNAME=root
@@ -16,6 +23,13 @@ services:
       - sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
     ports:
       - 9000:9000
+  init:
+    image: bash
+    privileged: true
+    user: root
+    volumes:
+      - ./init.sh:/mnt/init.sh
+    command: ["sh", "-e", "/mnt/init.sh"]
   db:
     image: postgres
     container_name: postgres
