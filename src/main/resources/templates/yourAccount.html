@@ -36,8 +36,8 @@
             <td>
                 <form action="#"
                       method="post"
-                      th:action="@{/reader(theBook=${tempBook.id})}"
-                      th:object="${reader}">
+                      th:action="@{/books/return(bookId=${tempBook.id})}"
+                      th:object="${theBook}">
                     <input type="submit" value="Return"/>
                 </form>
             </td>
@@ -46,7 +46,7 @@
     </table>
     <hr>
     <h2>
-        <a th:href="@{/reader/update}">Update your profile</a>
+        <a th:href="@{/users/update}">Update your profile</a>
     </h2>
     <hr>
 </div>

@@ -21,7 +21,7 @@
     <br/>
     <br/>
 
-    <form method="post" th:action="@{/login}">
+    <form method="post" th:action="@{/login}" name="login-form">
         <div class="col-md-6">
             <label class="form-label" for="username">Username</label>
             <input class="form-control" id="username" name="username" placeholder="Put your username" required="true"
@@ -36,7 +36,7 @@
         </div>
 
         <div class="col-md-12">
-            <button class="btn btn-primary mt-5" type="submit">Sign in</button>
+            <button class="btn btn-primary mt-5" type="submit" name="button">Sign in</button>
         </div>
     </form>
 

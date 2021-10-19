@@ -12,14 +12,14 @@
 <div th:replace="fragments/header :: header"/>
 <div class="container">
 
-    <h1>Reader List</h1>
+    <h1>Readers List</h1>
     <br>
     <br>
-    <a th:href="@{/register}">Register new reader</a>
+    <a th:href="@{/register}" id="register-link">Register new reader</a>
     <br>
     <br>
-    <h3>Readers</h3>
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped" id="readers-list">
+        <caption th:text="Readers"></caption>
         <thead class="thead-dark">
         <tr>
             <th>Name</th>
@@ -38,10 +38,10 @@
 
     <br>
     <br>
-    <a th:href="@{/librarian}">Return to librarian page</a>
+    <a th:href="@{/librarian}" id="librarian-page-link">Return to librarian page</a>
     <br>
     <br>
-    <a th:href="@{/}">Return to Welcome page</a>
+    <a th:href="@{/}" id="welcome-page-link">Return to Welcome page</a>
     <br>
     <br>
 

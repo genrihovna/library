@@ -16,14 +16,14 @@
             <span th:utext="${message}">Book is added</span>
             <span>Book is added</span>
         </div>
-        <input th:field="*{id}" type="hidden"/>
+        <input th:field="*{id}" type="hidden" name="id"/>
         <input class="form=control mb-4 col-4" placeholder="Title"
-               th:field="*{title}" type="text">
+               th:field="*{title}" type="text" name="title">
         <input class="form=control mb-4 col-4" placeholder="Author"
-               th:field="*{author}" type="text">
+               th:field="*{author}" type="text" name="author">
         <input class="form=control mb-4 col-4" placeholder="Published"
-               th:field="*{published}" type="text">
-        <button class="btn btn-info col-2" type="submit">Save</button>
+               th:field="*{published}" type="text" name="published">
+        <button class="btn btn-info col-2" type="submit" name="button">Save</button>
     </form>
     <hr>
     <a th:href="@{/}">Back to Welcome Page</a>

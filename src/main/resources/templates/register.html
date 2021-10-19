@@ -12,9 +12,9 @@
 
 <div class="container">
 
-    <h3>Register page</h3>
+    <h3 id="heading3">Register page</h3>
 
-    <form method="post" th:action="@{/register}" th:object="${user}">
+    <form name="registrationForm" method="post" th:action="@{/register}" th:object="${user}">
         <div class="col-md-6">
             <label class="form-label" for="username">Username</label>
             <input class="form-control" id="username" name="username" placeholder="Put your username" required="true"
@@ -23,7 +23,7 @@
 
         <div class="col-md-6">
             <label class="form-label" for="name">Name</label>
-            <input class="form-control" id="name" name="username" placeholder="Put your name" required="true"
+            <input class="form-control" id="name" name="name" placeholder="Put your name" required="true"
                    th:field="*{name}" type="text">
         </div>
 
@@ -35,7 +35,7 @@
         </div>
 
         <div class="col-md-12">
-            <button class="btn btn-primary mt-5" type="submit">Register</button>
+            <button name="submitButton" class="btn btn-primary mt-5" type="submit">Register</button>
         </div>
     </form>
 
