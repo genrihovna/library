@@ -15,4 +15,6 @@ public interface ReaderService {
 
     Reader takeABook(ApplicationUserDetails userDetails, long bookId);
 
+    void returnABook(ApplicationUserDetails userDetails, long bookId);
+
 }

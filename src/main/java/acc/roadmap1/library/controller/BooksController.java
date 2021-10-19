@@ -73,13 +73,11 @@ public class BooksController {
     }
 
     @PostMapping("/return")
-    public String returnABook(@RequestParam(name = "theBook") long bookId,
+    public String returnABook(@RequestParam(name = "bookId") long bookId,
                               @AuthenticationPrincipal ApplicationUserDetails userDetails, Model model) {
-        Book book = bookService.findById(bookId);
-        Reader reader = userDetails.getAccount().getReader();
-        reader.handOver(book);
-        readerService.save(reader);
-        model.addAttribute("readersBooks", reader.getBooks());
+        readerService.returnABook(userDetails, bookId);
+        model.addAttribute("theBook", bookService.findById(bookId));
+        model.addAttribute("readersBooks", userDetails.getAccount().getReader().getBooks());
         return "redirect:/";
     }
 }

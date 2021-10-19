@@ -58,4 +58,14 @@ public class ReaderServiceImpl implements ReaderService {
         currentReader.setBooks(books);
         return readerRepository.save(currentReader);
     }
+
+    @Override
+    public void returnABook(ApplicationUserDetails userDetails, long bookId) {
+        Reader currentReader = userDetails.getAccount().getReader();
+        Set<Book> books = currentReader.getBooks();
+        Book currentBook = bookRepository.findById(bookId).orElseThrow();
+        books.remove(currentBook);
+        currentReader.setBooks(books);
+        readerRepository.save(currentReader);
+    }
 }
