@@ -6,11 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -32,7 +28,7 @@ public class Reader {
     private Account account;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "reader",
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "reader",
             cascade = {CascadeType.PERSIST,
                     CascadeType.MERGE, CascadeType.DETACH,
                     CascadeType.REFRESH})
@@ -43,14 +39,11 @@ public class Reader {
         this.account = account;
     }
 
-    public void add(Book tempBook) {
-        if (books == null)
-            books = new HashSet<>();
-        books.add(tempBook);
-        tempBook.setReader(this);
+    public void setBooks(Set<Book> books) {
+        this.books = books;
     }
 
-    public void handOver(Book tempBook) {
+    public void handOver(final Book tempBook) {
         if (!books.contains(tempBook)) {
             throw new RuntimeException("Book " + tempBook.toString() + " is not found");
         } else {

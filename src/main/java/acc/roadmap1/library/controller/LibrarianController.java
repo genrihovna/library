@@ -1,8 +1,6 @@
 package acc.roadmap1.library.controller;
 
 import acc.roadmap1.library.model.ApplicationUserDetails;
-import acc.roadmap1.library.model.Book;
-import acc.roadmap1.library.model.BookStatus;
 import acc.roadmap1.library.model.Reader;
 import acc.roadmap1.library.service.BookService;
 import acc.roadmap1.library.service.ReaderService;
@@ -13,10 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.annotation.security.RolesAllowed;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/librarian")
@@ -33,21 +28,13 @@ public class LibrarianController {
 
     @GetMapping
     public String librarianPage(Model model, @AuthenticationPrincipal ApplicationUserDetails userDetails) {
-        List<Book> bookList = bookService.findAll().stream().peek(book -> {
-            if (book.getReader().equals(userDetails.getAccount().getReader())) {
-                book.setStatus(BookStatus.CAN_RETURN);
-            } else if (!book.getReader().equals(userDetails.getAccount().getReader())) {
-                book.setStatus(BookStatus.ALREADY_TAKE);
-            } else if (book.getReader() == null) {
-                book.setStatus(BookStatus.CAN_TAKE);
-            }
-        }).collect(Collectors.toList());
-        model.addAttribute("books", bookList);
+        var books = bookService.findBooksWithStatusForCurrentUser(userDetails);
+        model.addAttribute("books", books);
         return "librarian/index";
     }
 
     @GetMapping("/readers")
-    public String takeReaderList(Model theModel){
+    public String takeReaderList(Model theModel) {
         List<Reader> readerList = readerService.findAll();
         theModel.addAttribute("readers", readerList);
         return "librarian/reader-list";

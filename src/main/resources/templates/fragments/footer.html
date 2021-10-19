@@ -4,11 +4,11 @@
 <head>
 </head>
 <body>
-    <div th:fragment="footer">
+<div th:fragment="footer">
 
-        <div class="container">
+    <div class="container">
 
-            <footer>
+        <footer>
             <span sec:authorize="isAuthenticated()">
                 | Logged reader: <span sec:authentication="name"></span> |
                 Roles: <span sec:authentication="principal.authorities"></span> |
@@ -18,9 +18,9 @@
             </form>
             </span>
 
-            </footer>
-        </div>
-
+        </footer>
     </div>
+
+</div>
 </body>
 </html>

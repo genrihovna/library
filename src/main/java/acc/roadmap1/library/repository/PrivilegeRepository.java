@@ -9,5 +9,6 @@ import java.util.Set;
 
 @Repository
 public interface PrivilegeRepository extends JpaRepository<Privilege, Long> {
+
     Set<Privilege> findPrivilegeByNameIn(List<String> names);
 }

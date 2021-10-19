@@ -14,8 +14,8 @@ public class ErrorMapping {
     public String exception(Throwable throwable, Model model) {
         String errorMessage =
                 (throwable != null && throwable.getMessage() != null && !throwable.getMessage().isBlank() ?
-                throwable.getMessage() :
-                "Unknown error");
+                        throwable.getMessage() :
+                        "Unknown error");
         model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("errorCode", 500);
         return "error";

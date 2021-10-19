@@ -8,38 +8,40 @@
         .failed {
             color: red;
         }
+
     </style>
 </head>
 
 <body>
-    <div th:replace="fragments/header :: header"/>
+<div th:replace="fragments/header :: header"/>
 
-    <div class="container">
+<div class="container">
 
-        <h3>Library Login Page</h3>
-        <br/>
-        <br/>
+    <h3>Library Login Page</h3>
+    <br/>
+    <br/>
 
-        <form method="post" th:action="@{/login}">
-            <div class="col-md-6">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" name="username" class="form-control" id="username" placeholder="Put your username"
-                       required="true">
-            </div>
+    <form method="post" th:action="@{/login}" name="login-form">
+        <div class="col-md-6">
+            <label class="form-label" for="username">Username</label>
+            <input class="form-control" id="username" name="username" placeholder="Put your username" required="true"
+                   type="text">
+        </div>
 
-            <div class="col-md-6">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" id="password" placeholder="Put your password"
-                       required="true">
-            </div>
+        <div class="col-md-6">
+            <label class="form-label" for="password">Password</label>
+            <input class="form-control" id="password" name="password" placeholder="Put your password"
+                   required="true"
+                   type="password">
+        </div>
 
-            <div class="col-md-12">
-                <button type="submit" class="btn btn-primary mt-5">Sign in</button>
-            </div>
-        </form>
+        <div class="col-md-12">
+            <button class="btn btn-primary mt-5" type="submit" name="button">Sign in</button>
+        </div>
+    </form>
 
-    </div>
-    <div th:replace="fragments/footer :: footer"/>
+</div>
+<div th:replace="fragments/footer :: footer"/>
 </body>
 
 </html>

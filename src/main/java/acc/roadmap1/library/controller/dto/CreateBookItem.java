@@ -3,7 +3,7 @@ package acc.roadmap1.library.controller.dto;
 import lombok.Data;
 
 @Data
-public class BookDTO {
+public class CreateBookItem {
 
     private long id;
 

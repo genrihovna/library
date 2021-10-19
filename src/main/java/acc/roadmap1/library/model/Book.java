@@ -1,20 +1,10 @@
 package acc.roadmap1.library.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
+import java.util.Optional;
 
 @Entity
 @Data
@@ -49,6 +39,10 @@ public class Book {
         this.author = author;
         this.published = published;
         this.title = title;
+    }
+
+    public Optional<Reader> getReader() {
+        return Optional.ofNullable(reader);
     }
 
     public void setReader(Reader reader) {

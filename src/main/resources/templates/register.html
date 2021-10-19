@@ -8,42 +8,43 @@
 </head>
 
 <body>
-    <div th:replace="fragments/header :: header"/>
+<div th:replace="fragments/header :: header"/>
 
-    <div class="container">
+<div class="container">
 
-        <h3>Register page</h3>
+    <h3 id="heading3">Register page</h3>
 
-        <form method="post" th:action="@{/register}" th:object="${user}">
-            <div class="col-md-6">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" name="username" class="form-control" id="username" placeholder="Put your username"
-                       required="true" th:field="*{username}">
-            </div>
-
-            <div class="col-md-6">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" name="username" class="form-control" id="name" placeholder="Put your name"
-                       required="true" th:field="*{name}">
-            </div>
-
-            <div class="col-md-6">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" id="password" placeholder="Put your password"
-                       required="true" th:field="*{password}">
-            </div>
-
-            <div class="col-md-12">
-                <button type="submit" class="btn btn-primary mt-5">Register</button>
-            </div>
-        </form>
-
-        <div sec:authorize="hasAuthority('MANAGE_ACCOUNTS')">
-            Add <a th:href="@{/register/admin}">new admin</a>
+    <form name="registrationForm" method="post" th:action="@{/register}" th:object="${user}">
+        <div class="col-md-6">
+            <label class="form-label" for="username">Username</label>
+            <input class="form-control" id="username" name="username" placeholder="Put your username" required="true"
+                   th:field="*{username}" type="text">
         </div>
 
-        <div th:replace="fragments/footer :: footer"/>
+        <div class="col-md-6">
+            <label class="form-label" for="name">Name</label>
+            <input class="form-control" id="name" name="name" placeholder="Put your name" required="true"
+                   th:field="*{name}" type="text">
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label" for="password">Password</label>
+            <input class="form-control" id="password" name="password" placeholder="Put your password"
+                   required="true"
+                   th:field="*{password}" type="password">
+        </div>
+
+        <div class="col-md-12">
+            <button name="submitButton" class="btn btn-primary mt-5" type="submit">Register</button>
+        </div>
+    </form>
+
+    <div sec:authorize="hasAuthority('MANAGE_ACCOUNTS')">
+        Add <a th:href="@{/register/admin}">new admin</a>
     </div>
+
+    <div th:replace="fragments/footer :: footer"/>
+</div>
 
 </body>
 
