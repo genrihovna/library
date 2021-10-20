@@ -48,30 +48,15 @@ class BookServiceTest {
 
         reader.handOver(book);
 
-        Mockito.when(bookRepository.findAll()).thenReturn(List.of(
-                book
-        ));
+        Mockito.when(bookRepository.findAll()).thenReturn(List.of(book));
 
         ApplicationUserDetails userDetails = Mockito.mock(ApplicationUserDetails.class);
 
         Mockito.when(userDetails.getAccount()).thenReturn(account);
 
-//        var result = bookService.findBooksWithStatusForCurrentUser(userDetails);
-//
-//        Assertions.assertTrue(result.size() > 0);
-//        Assertions.assertEquals(BookStatus.CAN_RETURN, result.get(0).getStatus());
-
-//        book.setReader(null);
-        // Изменили book - у book есть reader
-//        reader.handOver(book);
-//
-//        Mockito.when(bookRepository.findAll()).thenReturn(List.of(
-//                book
-//        ));
-
         var result1 = bookService.findBooksWithStatusForCurrentUser(userDetails);
         Assertions.assertTrue(result1.size() > 0);
-        Assertions.assertEquals(BookStatus.CAN_TAKE, result1.get(0).getStatus());
+        Assertions.assertEquals(BookStatus.CAN_RETURN, result1.get(0).getStatus());
     }
 
     @Test
@@ -94,12 +79,12 @@ class BookServiceTest {
 
         var result = bookService.handOverBook(1, 1);
 
-        Mockito.when(bookService.findBooksWithStatusForCurrentUser(userDetails)).thenReturn(List.of(book));
+        Mockito.when(bookRepository.findAll()).thenReturn(List.of(result));
 
         result = bookService.findBooksWithStatusForCurrentUser(userDetails).get(0);
 
         Assertions.assertTrue(result.getReader().isPresent());
-        Assertions.assertEquals(BookStatus.ALREADY_TAKEN, result.getStatus());
+        Assertions.assertEquals(BookStatus.CAN_RETURN, result.getStatus());
     }
 
     @Test
@@ -116,13 +101,11 @@ class BookServiceTest {
     @Test
     public void deleteSomeBook(){
         Book newBook = new Book("new author", 2000, "new book");
-        Mockito.when(bookService.findById(anyLong())).thenReturn(newBook);
-        //Mockito.when(bookService.deleteById(newBook.getId())).then(new RuntimeException("Did not get book - " + newBook.getId()));
+        Mockito.when(bookRepository.findById(anyLong())).thenReturn(Optional.of(newBook));
 
         Book justFoundBook = bookService.findById(0);
 
         bookService.deleteById(justFoundBook.getId());
-        Assertions.assertNull(justFoundBook);
-        //Assertions.assertThrows(Throwable.class, new RuntimeException(), "Did not get book - " + justFoundBook.getId());
+        Mockito.verify(bookRepository, Mockito.times(1)).deleteById(anyLong());
     }
 }
