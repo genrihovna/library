@@ -68,10 +68,6 @@ public class BookServiceImpl implements BookService {
                     }
                 }
             }
-
-//            else if (book.getReader().get() == null) {
-//                book.setStatus(BookStatus.CAN_TAKE);
-//            }
         }).collect(Collectors.toList());
     }
 
