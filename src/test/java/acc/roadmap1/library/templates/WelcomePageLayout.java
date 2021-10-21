@@ -35,7 +35,6 @@ public class WelcomePageLayout {
         this.welcomePage = webClient.getPage("http://localhost:8080/");
     }
 
-    @Disabled
     @Test
     @WithMockUser(username = "test", password = "123456", authorities = {"MANAGE_BOOKS"})
     public void testMainLinks() throws IOException {
