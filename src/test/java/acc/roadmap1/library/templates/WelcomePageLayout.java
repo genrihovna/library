@@ -35,7 +35,6 @@ public class WelcomePageLayout {
         this.welcomePage = webClient.getPage("http://localhost:8080/");
     }
 
-    @Disabled
     @Test
     @WithMockUser(username = "test", password = "123456", authorities = {"MANAGE_BOOKS"})
     public void testMainLinks() throws IOException {
@@ -80,8 +79,8 @@ public class WelcomePageLayout {
         HtmlAnchor register = welcomePage.getAnchorByHref("/register");
 
         Assertions.assertTrue(signIn.click().isHtmlPage());
-        Assertions.assertEquals(signIn.click().getUrl().toString(), "http://localhost:8080/login");
+        Assertions.assertEquals("http://localhost:8080/login", signIn.click().getUrl().toString());
         Assertions.assertTrue(register.click().isHtmlPage());
-        Assertions.assertEquals(register.click().getUrl().toString(), "http://localhost:8080/register");
+        Assertions.assertEquals("http://localhost:8080/register", register.click().getUrl().toString());
     }
 }

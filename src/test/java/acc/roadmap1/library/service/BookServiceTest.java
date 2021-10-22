@@ -93,9 +93,9 @@ class BookServiceTest {
         Mockito.when(bookService.create(new CreateBookItem())).thenReturn(newBook);
 
         Book justCreatedBook = bookService.create(new CreateBookItem());
-        Assertions.assertEquals(justCreatedBook.getAuthor(), "new author");
-        Assertions.assertEquals(justCreatedBook.getPublished(), 2000);
-        Assertions.assertEquals(justCreatedBook.getTitle(), "new book");
+        Assertions.assertEquals("new author", justCreatedBook.getAuthor());
+        Assertions.assertEquals(2000, justCreatedBook.getPublished());
+        Assertions.assertEquals("new book", justCreatedBook.getTitle());
     }
 
     @Test
