@@ -105,6 +105,6 @@ class ReaderControllerTest {
                 .andExpect(status().isOk());
 
         assertTrue(h1.hasChildNodes());
-        assertEquals(welcome, "Welcome, uname");
+        assertEquals("Welcome, uname", welcome);
     }
 }

@@ -19,7 +19,7 @@ public class RegisterPageLayout {
 
     private MockMvc mockMvc;
     private WebClient webClient;
-    private HtmlPage registrationPage = null;
+    private HtmlPage registrationPage;
 
     @Autowired
     public RegisterPageLayout(MockMvc mockMvc) throws IOException {
@@ -62,6 +62,6 @@ public class RegisterPageLayout {
 
         Assertions.assertTrue(button.isDisplayed());
         Assertions.assertTrue(loginPage.isHtmlPage());
-        Assertions.assertEquals(loginPage.getBaseURL().toString(), "http://localhost:8080/login");
+        Assertions.assertEquals("http://localhost:8080/login", loginPage.getBaseURL().toString());
     }
 }

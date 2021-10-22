@@ -94,7 +94,7 @@ public class ReadersListLayout {
     public void testHeading() {
         //heading text, number of headings
         List<HtmlHeading1> h1 = readersListPage.getByXPath("/html/body/div[3]/h1");
-        Assertions.assertEquals(h1.size(), 1);
+        Assertions.assertEquals(1, h1.size());
         Assertions.assertEquals("Readers List", h1.get(0).getTextContent());
     }
 }
