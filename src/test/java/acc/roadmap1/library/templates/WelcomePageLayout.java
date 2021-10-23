@@ -1,13 +1,13 @@
 package acc.roadmap1.library.templates;
 
-import acc.roadmap1.library.model.*;
-import com.gargoylesoftware.htmlunit.DefaultCredentialsProvider;
 import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.*;
+import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
+import com.gargoylesoftware.htmlunit.html.HtmlFooter;
+import com.gargoylesoftware.htmlunit.html.HtmlHeading2;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,8 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.htmlunit.MockMvcWebClientBuilder;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Set;
+
+import static org.mockito.ArgumentMatchers.contains;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,48 +33,61 @@ public class WelcomePageLayout {
         this.webClient = MockMvcWebClientBuilder
                 .mockMvcSetup(mockMvc).build();
         this.welcomePage = webClient.getPage("http://localhost:8080/");
+        webClient.getOptions().setCssEnabled(false);
+        webClient.getOptions().setJavaScriptEnabled(false);
     }
 
+    @DisplayName("test links on Welcome page for registered reader")
     @Test
-    @WithMockUser(username = "test", password = "123456", authorities = {"MANAGE_BOOKS"})
-    public void testMainLinks() throws IOException {
-//        Account testAcc = new Account("test", "123456",
-//                Collections.singleton(new Role(RoleNames.READER.name(),
-//                        Set.of(new Privilege(Privileges.MANAGE_BOOKS.name())))));
-//        Reader testReader = new Reader("test", testAcc);
-       // Mockito.when(welcomePage.getAnchorByHref("/user")).thenReturn("");
-        //HtmlAnchor readersLink = welcomePage.getAnchorByHref("/user");
-        //HtmlAnchor librarianLink = welcomePage.getAnchorByHref("/librarian");
-        //HtmlLink readersLink = welcomePage.getFirstByXPath("<a href=\"/users\">your Profile page</a>");
-        //Mockito.when(welcomePage.isDisplayed()).thenReturn();
+    @WithMockUser(username = "reader", password = "123456", authorities = {"MANAGE_BOOKS"})
+    public void mainPageLinksForReader() throws Exception {
 
-        String username = "test";
-        String password = "123456";
-        DefaultCredentialsProvider creds = (DefaultCredentialsProvider) webClient.getCredentialsProvider();
-        try {
-            creds.addCredentials(username, password);
-            webClient.setCredentialsProvider(creds);
-        } catch (Exception e) {
-            System.out.println("!!! Problem login in");
-            e.printStackTrace();
-        }
+        HtmlHeading2 h2 = (HtmlHeading2) welcomePage.getByXPath("/html/body/div[3]/div/h2[2]").get(0);
+        HtmlHeading2 h2l = (HtmlHeading2) welcomePage.getByXPath("/html/body/div[3]/div/h2[1]").get(0);
+        HtmlPage readersPage = h2.click();
+        HtmlPage lPage = h2l.click();
 
-        HtmlLink readersLink = welcomePage.getHtmlElementById("profile");
-        //HtmlLink librarianLink = welcomePage.getFirstByXPath("/html/body/div[3]/div/h2[2]/div/a");
-        HtmlPage profilePage = webClient.getPage("http://localhost:8080/users");
-        //HtmlPage librarianPage = webClient.getPage("http://localhost:8080/librarian");
+        Assertions.assertTrue(h2.isDisplayed());
+        Assertions.assertFalse(h2l.isDisplayed()); //doesnt work!!
+        Assertions.assertTrue(readersPage.isHtmlPage());
+        Assertions.assertFalse(lPage.isHtmlPage()); //doesnt work!!
+}
 
-        Mockito.when(readersLink.click()).thenReturn(profilePage);
-//        Mockito.when(librarianLink.click()).thenReturn(librarianPage);
-//
-        Assertions.assertTrue(profilePage.isHtmlPage());
-        Assertions.assertTrue(profilePage.getTitleText().contains("profile"));
-        Assertions.assertTrue(profilePage.isHtmlPage());
-        Assertions.assertTrue(profilePage.getTitleText().contains("profile"));
+    @DisplayName("test how Welcome page looks for librarian")
+    @Test
+    @WithMockUser(username = "librarian", password = "123456", authorities = {"MANAGE_ACCOUNTS"})
+    public void mainPageForLibrarian() throws IOException {
+        HtmlHeading2 readerLink = (HtmlHeading2) welcomePage.getByXPath("/html/body/div[3]/div/h2[1]").get(0);
+        HtmlPage readersPage = readerLink.click();
+        HtmlHeading2 librarianLink = (HtmlHeading2) welcomePage.getByXPath("/html/body/div[3]/div/h2[2]").get(0);
+        HtmlPage librarianPage = librarianLink.click();
+
+        HtmlFooter footer = welcomePage.getElementByName("footer");
+
+        Assertions.assertTrue(readerLink.isDisplayed());
+        Assertions.assertTrue(librarianLink.isDisplayed());
+        Assertions.assertTrue(footer.isDisplayed());
+        Assertions.assertTrue(readersPage.isHtmlPage());
+        Assertions.assertTrue(librarianPage.isHtmlPage());
+        Assertions.assertEquals("http://localhost:8080/users", readersPage.getUrl().toString()); //doesnt work!!
+        Assertions.assertEquals("http://localhost:8080/librarian", librarianPage.getUrl().toString()); //doesnt work!!
     }
 
+    @DisplayName("test how Welcome page looks for anonymous user")
     @Test
-    public void testHeaderLinks() throws IOException {
+    public void mainPageForAnonymousUserTest(){
+        HtmlFooter footer = welcomePage.getElementByName("footer");
+        HtmlHeading2 readerLink = (HtmlHeading2) welcomePage.getByXPath("/html/body/div[3]/div/h2[1]").get(0);
+        HtmlHeading2 librarianLink = (HtmlHeading2) welcomePage.getByXPath("/html/body/div[3]/div/h2[2]").get(0);
+        Assertions.assertEquals(readerLink.getTextContent(), contains("Visit")); //doesnt work!!
+        Assertions.assertTrue(footer.isDisplayed());
+        Assertions.assertTrue(readerLink.isHidden()); //doesnt work!!
+        Assertions.assertFalse(librarianLink.isDisplayed()); //doesnt work!!
+    }
+
+    @DisplayName("test links of the header")
+    @Test
+    public void headerLinksTest() throws IOException {
         HtmlAnchor signIn = welcomePage.getAnchorByHref("/login");
         HtmlAnchor register = welcomePage.getAnchorByHref("/register");
 
