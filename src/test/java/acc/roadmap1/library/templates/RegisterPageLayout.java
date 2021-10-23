@@ -3,13 +3,13 @@ package acc.roadmap1.library.templates;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.htmlunit.MockMvcWebClientBuilder;
-import org.w3c.dom.html.HTMLDivElement;
 
 import java.io.IOException;
 
@@ -29,8 +29,9 @@ public class RegisterPageLayout {
         this.registrationPage = webClient.getPage("http://localhost:8080/register");
     }
 
+    @DisplayName("test all headings, inputs and button of registration page")
     @Test
-    public void testRegisterPageLayout(){
+    public void registerPageLayoutTest(){
         HtmlHeading3 heading = registrationPage.getHtmlElementById("heading3");
         HtmlForm form = registrationPage.getFormByName("registrationForm");
         HtmlButton button = form.getButtonByName("submitButton");
@@ -45,8 +46,9 @@ public class RegisterPageLayout {
         Assertions.assertEquals("Register", button.getVisibleText());
     }
 
+    @DisplayName("test register form")
     @Test
-    public void testRegisterForm() throws IOException {
+    public void registerFormTest() throws IOException {
         //fill in all fields, press button, get new page
         HtmlForm form = registrationPage.getFormByName("registrationForm");
         HtmlButton button = form.getButtonByName("submitButton");
