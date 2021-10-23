@@ -1,13 +1,12 @@
 package acc.roadmap1.library.templates;
 
-import com.gargoylesoftware.htmlunit.DefaultCredentialsProvider;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlHeading1;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,8 +42,9 @@ public class ReadersListLayout {
         this.readersListPage = webClient.getPage(urlBase + urlTemplate);
     }
 
+    @DisplayName("test how link to the registration page is working")
     @Test
-    public void testRegistrationLinks() throws Exception {
+    public void registrationLinksTest() throws Exception {
         //link as texts, link functionality
         mockMvc.perform(get(urlTemplate)).andDo(print()).andExpect(
                         status().isOk())
@@ -57,8 +57,9 @@ public class ReadersListLayout {
         Assertions.assertEquals(loginPage.getBaseURL().toString(), urlBase + "/register");
     }
 
+    @DisplayName("test how link to home page is working")
     @Test
-    public void testHomeLink() throws Exception {
+    public void homeLinkTest() throws Exception {
         //link as texts, link functionality
         mockMvc.perform(get(urlTemplate)).andDo(print()).andExpect(
                         status().isOk())
@@ -71,8 +72,9 @@ public class ReadersListLayout {
         Assertions.assertEquals(homePage.getBaseURL().toString(), urlBase + "/");
     }
 
+    @DisplayName("test how link to librarian page is working")
     @Test
-    public void testLibrarianLink() throws Exception {
+    public void librarianLinkTest() throws Exception {
         //link as texts, link functionality
         mockMvc.perform(get(urlTemplate)).andDo(print()).andExpect(
                         status().isOk())
@@ -84,14 +86,16 @@ public class ReadersListLayout {
         Assertions.assertTrue(librarianPage.isHtmlPage());
     }
 
+    @DisplayName("test column headers in the table")
     @Test
-    public void testTableHeads() throws Exception {
+    public void tableHeadersTest() throws Exception {
         mockMvc.perform(get(urlTemplate)).andDo(print())
                 .andExpect(content().string(stringContainsInOrder("Name", "Account", "Books")));
     }
 
+    @DisplayName("test heading")
     @Test
-    public void testHeading() {
+    public void headingTest() {
         //heading text, number of headings
         List<HtmlHeading1> h1 = readersListPage.getByXPath("/html/body/div[3]/h1");
         Assertions.assertEquals(1, h1.size());
