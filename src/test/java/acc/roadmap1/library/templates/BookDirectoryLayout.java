@@ -62,6 +62,5 @@ public class BookDirectoryLayout {
 
         //check button is working
         Assertions.assertTrue(librarianPage.isHtmlPage());
-
     }
 }

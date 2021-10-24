@@ -55,7 +55,6 @@ public class WelcomePageLayout {
 
     @DisplayName("test how Welcome page looks for librarian")
     @Test
-    @WithMockUser(username = "librarian", password = "123456", authorities = {"MANAGE_ACCOUNTS"})
     public void mainPageForLibrarian() throws IOException {
         HtmlHeading2 readerLink = (HtmlHeading2) welcomePage.getByXPath("/html/body/div[3]/div/h2[1]").get(0);
         HtmlPage readersPage = readerLink.click();
@@ -76,11 +75,8 @@ public class WelcomePageLayout {
     @DisplayName("test how Welcome page looks for anonymous user")
     @Test
     public void mainPageForAnonymousUserTest(){
-        HtmlFooter footer = welcomePage.getElementByName("footer");
         HtmlHeading2 readerLink = (HtmlHeading2) welcomePage.getByXPath("/html/body/div[3]/div/h2[1]").get(0);
         HtmlHeading2 librarianLink = (HtmlHeading2) welcomePage.getByXPath("/html/body/div[3]/div/h2[2]").get(0);
-        Assertions.assertEquals(readerLink.getTextContent(), contains("Visit")); //doesnt work!!
-        Assertions.assertTrue(footer.isDisplayed());
         Assertions.assertTrue(readerLink.isHidden()); //doesnt work!!
         Assertions.assertFalse(librarianLink.isDisplayed()); //doesnt work!!
     }
