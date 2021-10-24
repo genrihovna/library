@@ -63,7 +63,7 @@ public class BookServiceImpl implements BookService {
                 if (userDetails != null) {
                     if (book.getReader().get().equals(userDetails.getAccount().getReader())) {
                         book.setStatus(BookStatus.CAN_RETURN);
-                    } else if (!book.getReader().get().equals(userDetails.getAccount().getReader())) {
+                    } else {
                         book.setStatus(BookStatus.ALREADY_TAKEN);
                     }
                 }

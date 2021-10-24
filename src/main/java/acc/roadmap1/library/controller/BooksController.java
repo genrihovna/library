@@ -27,7 +27,7 @@ public class BooksController {
         this.readerService = readerService;
     }
 
-    @Secured("MANAGE_BOOKS")
+    //@Secured("MANAGE_BOOKS")
     @GetMapping("/add")
     public String addABook(Model model) {
         CreateBookItem book = new CreateBookItem();
@@ -59,6 +59,8 @@ public class BooksController {
                             @AuthenticationPrincipal ApplicationUserDetails userDetails,
                             Model attribute) {
         Book book = bookService.findById(bookId);
+        System.out.println("userdetails //" + userDetails);
+        System.out.println(userDetails.getUsername());
         String readerName = userDetails.getUsername();
         Reader reader = readerService.findByName(readerName);
         if (reader.getBooks().contains(book)) {
