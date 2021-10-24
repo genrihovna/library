@@ -17,8 +17,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 
 @SpringBootTest
 public class ReaderServiceTest {
@@ -75,6 +74,6 @@ public class ReaderServiceTest {
 
         readerService.takeABook(userDetails, bookToReturn.getId());
 
-        Mockito.verify(readerService, Mockito.times(1)).takeABook(userDetails, anyLong());
+        Mockito.verify(readerRepository, Mockito.times(1)).save(any());
     }
 }
