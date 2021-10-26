@@ -50,31 +50,6 @@ public class RootControllerTest {
     }
 
     @Test
-    public void checkValidTableMapping() throws IOException {
-        HtmlPage createMsgFormPage = webClient.getPage("http://localhost:8080");
-        HtmlTable listOfBooksTable = createMsgFormPage.getHtmlElementById("list-books");
-
-        Assertions.assertEquals("List of Books", listOfBooksTable.getCaptionText());
-        Assertions.assertEquals(1, listOfBooksTable.getRowCount());
-    }
-
-    @Test
-    public void checkValidLoadBooksInTable() throws IOException {
-
-        Mockito.when(bookService.findAll()).thenReturn(List.of(
-                new Book("author", 1991, "title")
-        ));
-
-        HtmlPage createMsgFormPage = webClient.getPage("http://localhost:8080");
-        HtmlTable listOfBooksTable = createMsgFormPage.getHtmlElementById("list-books");
-
-        Assertions.assertEquals("List of Books", listOfBooksTable.getCaptionText());
-        Assertions.assertEquals(1, listOfBooksTable.getRowCount());
-        Assertions.assertEquals("title", listOfBooksTable.getRow(0).getCell(0).getTextContent());
-        Assertions.assertEquals("author", listOfBooksTable.getRow(0).getCell(1).getTextContent());
-    }
-
-    @Test
     @WithMockUser(username = "test", password = "123456", authorities = {"MANAGE_BOOKS"})
     public void checkValidAuthLoadBooksInTable() throws IOException {
 
