@@ -14,7 +14,10 @@
 
     <h3 id="heading3">Register page</h3>
 
-    <p th:value="${error}"></p>
+    <div class="alert alert-danger" role="alert" th:if="${errorMessage != null && !errorMessage.isEmpty()}">
+        <span th:text="${errorMessage}">
+        </span>
+    </div>
 
     <form name="registrationForm" method="post" th:action="@{/register}" th:object="${user}">
         <div class="col-md-6">

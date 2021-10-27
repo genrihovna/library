@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @ControllerAdvice
 public class ErrorMapping {
@@ -32,13 +33,11 @@ public class ErrorMapping {
     }
 
     @ExceptionHandler(LibraryException.class)
-    public ModelAndView handleProjectException(LibraryException e, Model model) {
+    public String handleProjectException(LibraryException e, RedirectAttributes redirectAttrs) {
 
-        ModelMap modelMap = new ModelMap();
+        redirectAttrs.addFlashAttribute("errorMessage", e.getMessage());
+        redirectAttrs.addFlashAttribute("errorCode", e.getErrorCode());
 
-        modelMap.addAttribute("error", e.getMessage());
-        modelMap.addAttribute("errorCode", e.getErrorCode());
-
-        return new ModelAndView("redirect:" + e.getRedirectPage());
+        return "redirect:" + e.getRedirectPage();
     }
 }

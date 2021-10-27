@@ -49,7 +49,6 @@ public class RootController {
     @GetMapping("/register")
     public String getRegisterPage(Model model) {
         model.addAttribute("user", new RegisterAccount());
-        model.addAttribute("error", "1");
         return "register";
     }
 
