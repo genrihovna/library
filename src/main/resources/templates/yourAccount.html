@@ -36,8 +36,8 @@
             <td>
                 <form action="#"
                       method="post"
-                      th:action="@{/books/return(bookId=${tempBook.id})}"
-                      th:object="${theBook}">
+                      th:action="@{/books/return(id=${tempBook.id})}"
+                      th:object="${tempBook}">
                     <input type="submit" value="Return"/>
                 </form>
             </td>

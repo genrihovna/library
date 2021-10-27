@@ -1,5 +1,6 @@
 package acc.roadmap1.library.service;
 
+import acc.roadmap1.library.LibraryException;
 import acc.roadmap1.library.model.*;
 import acc.roadmap1.library.repository.AccountRepository;
 import acc.roadmap1.library.repository.PrivilegeRepository;
@@ -15,6 +16,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -63,13 +66,17 @@ public class SecurityService implements UserDetailsService {
     }
 
     public void createReaderAccount(String username, String password, String name) {
-        Role readerRole = getRole(RoleNames.READER.name(), getReaderPrivileges());
+        try {
+            Role readerRole = getRole(RoleNames.READER.name(), getReaderPrivileges());
 
-        Account account = new Account(username, passwordEncoder.encode(password), Set.of(readerRole));
-        account = accountRepository.save(account);
+            Account account = new Account(username, passwordEncoder.encode(password), Set.of(readerRole));
+            account = accountRepository.save(account);
 
-        Reader reader = new Reader(name, account);
-        readerRepository.save(reader);
+            Reader reader = new Reader(name, account);
+            readerRepository.save(reader);
+        } catch (RuntimeException e) {
+            throw new LibraryException("/register", "Error on registration");
+        }
     }
 
     @NotNull
