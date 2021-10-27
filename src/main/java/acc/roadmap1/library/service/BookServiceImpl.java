@@ -56,12 +56,11 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> findBooksWithStatusForCurrentUser(ApplicationUserDetails userDetails) {
         return bookRepository.findAll().stream().peek(book -> {
-
             if (book.getReader().isEmpty()) {
                 book.setStatus(BookStatus.CAN_TAKE);
             } else {
                 if (userDetails != null) {
-                    if (book.getReader().get().equals(userDetails.getAccount().getReader())) {
+                    if (book.getReader().get().getId() == userDetails.getAccount().getReader().getId()) {
                         book.setStatus(BookStatus.CAN_RETURN);
                     } else {
                         book.setStatus(BookStatus.ALREADY_TAKEN);

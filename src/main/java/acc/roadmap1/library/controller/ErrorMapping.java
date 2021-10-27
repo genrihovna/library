@@ -18,6 +18,9 @@ public class ErrorMapping {
                         "Unknown error");
         model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("errorCode", 500);
+
+        throwable.printStackTrace();
+
         return "error";
     }
 }

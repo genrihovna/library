@@ -64,16 +64,10 @@ public class ReaderServiceImpl implements ReaderService {
     public void returnABook(Principal principal, long bookId) {
         Reader currentReader = readerRepository.findReaderByName(principal.getName()).orElseThrow();
         Book currentBook = bookRepository.findById(bookId).orElseThrow();
-        Set<Book> books = currentReader.getBooks();
-        bookRepository.delete(currentBook);
 
-        books.remove(currentBook);
-        books=currentReader.getBooks();
-//                currentReader.handOver(currentBook);
-        readerRepository.save(currentReader);
+        currentBook.setReader(null);
+        bookRepository.save(currentBook);
 
-        //bookRepository.save(currentBook);
-        currentReader.setBooks(books);
-
+        currentReader.setBooks(readerRepository.findById(currentReader.getId()).orElseThrow().getBooks());
     }
 }

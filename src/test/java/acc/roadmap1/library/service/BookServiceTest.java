@@ -43,7 +43,7 @@ class BookServiceTest {
 
         Book bookToCheckStatus = new Book("author", 1991, "title");
         bookToCheckStatus.setReader(reader);
-        reader.handOver(bookToCheckStatus);
+//        reader.handOver(bookToCheckStatus);
 
         Mockito.when(account.getReader()).thenReturn(reader);
         Mockito.when(bookRepository.findAll()).thenReturn(List.of(bookToCheckStatus));

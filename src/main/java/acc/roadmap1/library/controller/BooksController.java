@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/books")
 public class BooksController {
@@ -53,16 +55,16 @@ public class BooksController {
     }
 
     @PostMapping("/take")
-    public String takeABook(@RequestParam(name = "id") long bookId,
-                            @AuthenticationPrincipal ApplicationUserDetails userDetails,
+    public String takeABook(@RequestParam(name = "id") long id,
+                            Principal principal,
                             Model attribute) {
-        Book book = bookService.findById(bookId);
+        Book book = bookService.findById(id);
         String readerName = principal.getName();
         Reader reader = readerService.findByName(readerName);
         if (reader.getBooks().contains(book)) {
             throw new RuntimeException("This book is already in your list.");
         } else {
-            bookService.handOverBook(bookId, reader.getId());
+            bookService.handOverBook(id, reader.getId());
             //reader = readerService.takeABook(userDetails, bookId);
             attribute.addAttribute("reader", reader);
             attribute.addAttribute("readersBooks", reader.getBooks());
@@ -71,10 +73,10 @@ public class BooksController {
     }
 
     @PostMapping("/return")
-    public String returnABook(@RequestParam(name = "bookId") long bookId,
+    public String returnABook(@RequestParam(name = "id") long id,
                               Principal principal, Model model) {
-        readerService.returnABook(principal, bookId);
-        model.addAttribute("theBook", bookService.findById(bookId));
+        readerService.returnABook(principal, id);
+        model.addAttribute("theBook", bookService.findById(id));
         model.addAttribute("readersBooks", readerService.findByName(principal.getName()).getBooks());
         return "redirect:/";
     }

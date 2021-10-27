@@ -42,13 +42,4 @@ public class Reader {
     public void setBooks(Set<Book> books) {
         this.books = books;
     }
-
-    public void handOver(final Book tempBook) {
-        if (!books.contains(tempBook)) {
-            throw new RuntimeException("Book " + tempBook.toString() + " is not found");
-        } else {
-            books.remove(tempBook);
-            tempBook.setReader(null);
-        }
-    }
 }
