@@ -7,7 +7,6 @@ import acc.roadmap1.library.model.Reader;
 import acc.roadmap1.library.service.BookService;
 import acc.roadmap1.library.service.ReaderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +26,6 @@ public class BooksController {
         this.readerService = readerService;
     }
 
-    //@Secured("MANAGE_BOOKS")
     @GetMapping("/add")
     public String addABook(Model model) {
         CreateBookItem book = new CreateBookItem();
@@ -59,9 +57,7 @@ public class BooksController {
                             @AuthenticationPrincipal ApplicationUserDetails userDetails,
                             Model attribute) {
         Book book = bookService.findById(bookId);
-        System.out.println("userdetails //" + userDetails);
-        System.out.println(userDetails.getUsername());
-        String readerName = userDetails.getUsername();
+        String readerName = principal.getName();
         Reader reader = readerService.findByName(readerName);
         if (reader.getBooks().contains(book)) {
             throw new RuntimeException("This book is already in your list.");
@@ -76,10 +72,10 @@ public class BooksController {
 
     @PostMapping("/return")
     public String returnABook(@RequestParam(name = "bookId") long bookId,
-                              @AuthenticationPrincipal ApplicationUserDetails userDetails, Model model) {
-        readerService.returnABook(userDetails, bookId);
+                              Principal principal, Model model) {
+        readerService.returnABook(principal, bookId);
         model.addAttribute("theBook", bookService.findById(bookId));
-        model.addAttribute("readersBooks", userDetails.getAccount().getReader().getBooks());
+        model.addAttribute("readersBooks", readerService.findByName(principal.getName()).getBooks());
         return "redirect:/";
     }
 }

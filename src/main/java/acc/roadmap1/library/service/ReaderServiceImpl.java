@@ -10,6 +10,7 @@ import acc.roadmap1.library.repository.ReaderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -60,12 +61,19 @@ public class ReaderServiceImpl implements ReaderService {
     }
 
     @Override
-    public void returnABook(ApplicationUserDetails userDetails, long bookId) {
-        Reader currentReader = userDetails.getAccount().getReader();
-        Set<Book> books = currentReader.getBooks();
+    public void returnABook(Principal principal, long bookId) {
+        Reader currentReader = readerRepository.findReaderByName(principal.getName()).orElseThrow();
         Book currentBook = bookRepository.findById(bookId).orElseThrow();
+        Set<Book> books = currentReader.getBooks();
+        bookRepository.delete(currentBook);
+
         books.remove(currentBook);
-        currentReader.setBooks(books);
+        books=currentReader.getBooks();
+//                currentReader.handOver(currentBook);
         readerRepository.save(currentReader);
+
+        //bookRepository.save(currentBook);
+        currentReader.setBooks(books);
+
     }
 }
